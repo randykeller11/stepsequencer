@@ -1,21 +1,28 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, Component } from 'react';
+import Piano from './component/piano';
+import Chords from './component/chords'
+import Tone from 'tone';
+
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Fragment>
+        <Piano />
+        <Chords />
+      </Fragment>
     );
   }
 }
+
+// class App extends Component {
+//   render() {
+//     return (
+//       <div className="App">
+//       <button onClick={() => playExample()}>Play</button>
+//       </div>
+//     );
+//   }
+// }
 
 export default App;
