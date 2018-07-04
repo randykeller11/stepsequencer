@@ -10,6 +10,16 @@ class Piano extends Component {
 
     playNote = input => {
         var synth1 = new Tone.Synth().toMaster()
+        synth1.set({
+            "envelope" : {
+                "attack" : 0.1,
+                "decay": 0.1,
+                "sustain": 0.3,
+                "release" : 1
+            }
+        });
+
+    
         console.log(input);
         let currentTime = Tone.now();
         synth1.triggerAttackRelease(input, '8n', currentTime + 0)
