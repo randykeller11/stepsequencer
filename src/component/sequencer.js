@@ -15,26 +15,33 @@ class Sequencer extends Component {
             steps: 8,
             patternName: this.props.pattern.name
         };
+
+        this.kick = new Tone.Player({
+            "url" : "http://freewavesamples.com/files/Bass-Drum-1.wav",
+        }).toMaster();
+
+
       }
 
+
+    componentDidMount = () => {
+    }
+
+    playSound = () => {
+        this.kick.start();
+    }
+
     startLoop = () => {
-
-        Tone.context = new AudioContext() 
-
-        var synth1 = new Tone.Synth().toMaster()
-
-        var loop = new Tone.Sequence(function(time, note){
+        var loop = new Tone.Sequence((time, note) => {
             console.log(note);
             if(note > 0){
-                console.log("*BAM*");
-                synth1.triggerAttackRelease('C4', '16n')
+                this.kick.start();
             }
         }, this.props.pattern.events,"8n").start(0);
         Tone.Transport.start();
     }
 
     stopLoop = () => {
-        Tone.context.close() 
         Tone.Transport.stop();
     }
 
@@ -43,6 +50,7 @@ class Sequencer extends Component {
         return(
         <Fragment>
         <h1>{this.state.patternName}</h1>
+        <button onClick={() => this.playSound()}> Kick </button>
         <button onClick={() => this.startLoop()}> Start </button>
         <button onClick={() => this.stopLoop()}> Stop </button>
         </Fragment>
