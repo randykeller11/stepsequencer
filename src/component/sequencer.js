@@ -22,6 +22,14 @@ class Sequencer extends Component {
             "url" : "./Snare.wav"
         }).toMaster();
 
+        this.hihat = new Tone.Player({
+            "url" : "./Hihat.wav"
+        }).toMaster();
+
+        this.clap = new Tone.Player({
+            "url" : "./Clap.wav"
+        }).toMaster();
+
       }
 
 
@@ -40,6 +48,20 @@ class Sequencer extends Component {
                 this.snare.start();
             }
         }, this.props.pattern.events[1],"8n").start(0);
+
+        let hiHatLoop = new Tone.Sequence((time, note) => {
+            console.log("snareloop");
+            if(note == 1){
+                this.hihat.start();
+            }
+        }, this.props.pattern.events[2],"8n").start(0);
+
+        let clapLoop = new Tone.Sequence((time, note) => {
+            console.log("snareloop");
+            if(note == 1){
+                this.clap.start();
+            }
+        }, this.props.pattern.events[3],"8n").start(0);
 
     }
 
