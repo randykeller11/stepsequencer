@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Tone from 'tone';
 
-
-
 class Sequencer extends Component {
     
     constructor(props) {
@@ -17,27 +15,43 @@ class Sequencer extends Component {
         };
 
         this.kick = new Tone.Player({
-            "url" : "http://freewavesamples.com/files/Bass-Drum-1.wav",
+            "url" : "./Kick.wav"
         }).toMaster();
 
+        this.snare = new Tone.Player({
+            "url" : "./Snare.wav"
+        }).toMaster();
 
       }
 
 
+    prepareEventGrid = () => {
+        
+        let kickLoop = new Tone.Sequence((time, note) => {
+            console.log("kickloop");
+            if(note == 1){
+                this.kick.start();
+            }
+        }, this.props.pattern.events[0],"8n").start(0);
+
+        let snareLoop = new Tone.Sequence((time, note) => {
+            console.log("snareloop");
+            if(note == 1){
+                this.snare.start();
+            }
+        }, this.props.pattern.events[1],"8n").start(0);
+
+    }
+
     componentDidMount = () => {
+        this.prepareEventGrid();
     }
 
     playSound = () => {
-        this.kick.start();
+        this.snare.start();
     }
 
-    startLoop = () => {
-        var loop = new Tone.Sequence((time, note) => {
-            console.log(note);
-            if(note > 0){
-                this.kick.start();
-            }
-        }, this.props.pattern.events,"8n").start(0);
+    startLoop = () => {        
         Tone.Transport.start();
     }
 
@@ -45,7 +59,6 @@ class Sequencer extends Component {
         Tone.Transport.stop();
     }
 
-    
     render(){
         return(
         <Fragment>
