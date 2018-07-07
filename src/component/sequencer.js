@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import Tone from 'tone';
 
+import Track from './track'
+
 class Sequencer extends Component {
     
     constructor(props) {
@@ -10,7 +12,7 @@ class Sequencer extends Component {
             bpm: 120,
             position: 0,
             playing: false,
-            steps: 8,
+            steps: 16,
             patternName: this.props.pattern.name
         };
 
@@ -36,28 +38,24 @@ class Sequencer extends Component {
     prepareEventGrid = () => {
         
         let kickLoop = new Tone.Sequence((time, note) => {
-            console.log("kickloop");
             if(note == 1){
                 this.kick.start();
             }
         }, this.props.pattern.events[0],"8n").start(0);
 
         let snareLoop = new Tone.Sequence((time, note) => {
-            console.log("snareloop");
             if(note == 1){
                 this.snare.start();
             }
         }, this.props.pattern.events[1],"8n").start(0);
 
         let hiHatLoop = new Tone.Sequence((time, note) => {
-            console.log("snareloop");
             if(note == 1){
                 this.hihat.start();
             }
         }, this.props.pattern.events[2],"8n").start(0);
 
         let clapLoop = new Tone.Sequence((time, note) => {
-            console.log("snareloop");
             if(note == 1){
                 this.clap.start();
             }
@@ -70,7 +68,7 @@ class Sequencer extends Component {
     }
 
     playSound = () => {
-        this.snare.start();
+        this.kick.start();
     }
 
     startLoop = () => {        
@@ -84,10 +82,11 @@ class Sequencer extends Component {
     render(){
         return(
         <Fragment>
-        <h1>{this.state.patternName}</h1>
-        <button onClick={() => this.playSound()}> Kick </button>
-        <button onClick={() => this.startLoop()}> Start </button>
-        <button onClick={() => this.stopLoop()}> Stop </button>
+            <h1>{this.state.patternName}</h1>
+            <button onClick={() => this.playSound()}> Kick </button>
+            <button onClick={() => this.startLoop()}> Start </button>
+            <button onClick={() => this.stopLoop()}> Stop </button>
+            <Track rowLength={this.state.steps}/>
         </Fragment>
         )
     }
