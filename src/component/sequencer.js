@@ -13,8 +13,10 @@ class Sequencer extends Component {
             position: 0,
             playing: false,
             steps: 16,
+            noteDivision: "8n",
             patternName: this.props.pattern.name,
-            tracks: ["Kick", "Snare", "Hihat", "Clap"]
+            tracks: ["Kick", "Snare", "Hihat", "Clap"],
+            pattern: this.props.pattern.events
         };
 
         this.kick = new Tone.Player({
@@ -33,49 +35,66 @@ class Sequencer extends Component {
             "url" : "./Clap.wav"
         }).toMaster();
 
+        this.kickVol = new Tone.PanVol();
+        this.kick.chain(this.kickVol, Tone.Master);
+
+        this.hihatVol = new Tone.PanVol();
+        this.hihat.chain(this.hihatVol, Tone.Master);
+
+        this.positionLoop;
+        this.kickLoop;
+        this.snareLoop;
+        this.hiHatLoop;
+        this.clapLoop;
+
       }
 
 
     prepareEventGrid = () => {
 
-        let positionLoop = new Tone.Sequence((time, note) => {
-            console.log(this.state.position);
-            if(this.state.position >= this.state.steps){
-                this.setState({position: 0})
-            }
-            else{
-                this.setState({position: this.state.position + 1});
-            }
-
-        }, this.props.pattern.events[0],"8n").start(0);
+        this.positionLoop = new Tone.Sequence((time, note) => {
+            console.log(Tone.Transport.position);
+            this.setState({position: Tone.Transport.position})
+        }, this.state.pattern[0], this.state.noteDivision).start(0);
         
-        let kickLoop = new Tone.Sequence((time, note) => {
+        this.kickLoop = new Tone.Sequence((time, note) => {
             if(note == 1){
                 this.kick.start();
             }
-        }, this.props.pattern.events[0],"8n").start(0);
+        }, this.state.pattern[0], this.state.noteDivision).start(0);
 
-        let snareLoop = new Tone.Sequence((time, note) => {
+        this.snareLoop = new Tone.Sequence((time, note) => {
             if(note == 1){
                 this.snare.start();
             }
-        }, this.props.pattern.events[1],"8n").start(0);
+        }, this.state.pattern[1], this.state.noteDivision).start(0);
 
-        let hiHatLoop = new Tone.Sequence((time, note) => {
+        this.hiHatLoop = new Tone.Sequence((time, note) => {
             if(note == 1){
                 this.hihat.start();
             }
-        }, this.props.pattern.events[2],"8n").start(0);
+        }, this.state.pattern[2], this.state.noteDivision).start(0);
 
-        let clapLoop = new Tone.Sequence((time, note) => {
+        this.clapLoop = new Tone.Sequence((time, note) => {
             if(note == 1){
                 this.clap.start();
             }
-        }, this.props.pattern.events[3],"8n").start(0);
+        }, this.state.pattern[3], this.state.noteDivision).start(0);
 
     }
 
     componentDidMount = () => {
+        this.prepareEventGrid();
+    }
+
+    updateTrackPattern = (track, pattern) => {
+        console.log(track + " is the track " + this.state.pattern[track]);
+        this.positionLoop.dispose();
+        this.kickLoop.dispose();
+        this.snareLoop.dispose();
+        this.hiHatLoop.dispose();
+        this.clapLoop.dispose();
+
         this.prepareEventGrid();
     }
 
@@ -84,6 +103,7 @@ class Sequencer extends Component {
     }
 
     startLoop = () => {        
+        Tone.Transport.bpm.value = 140;
         Tone.Transport.start();
     }
 
@@ -92,13 +112,23 @@ class Sequencer extends Component {
         this.setState({position: 0})
     }
 
+    volumeRange = (event) => {
+        console.log(this.kickVol.volume.value);
+        this.hihatVol.volume.value = event.currentTarget.value;
+    }
+
     render(){
 
         let trackArray = [];
         for(let i=0; i < this.props.pattern.events.length; i++){
             trackArray.push(
                 <div key={i} track={i}>
-                    <Track position={this.state.position} trackName={this.state.tracks[i]} rowLength={this.state.steps} pattern={this.props.pattern.events[i]}/>
+                    <Track id={i} 
+                           position={this.state.position} 
+                           updatePattern={this.updateTrackPattern} 
+                           trackName={this.state.tracks[i]} 
+                           rowLength={this.state.steps} 
+                           pattern={this.props.pattern.events[i]}/>
                 </div>
 
             )
@@ -109,6 +139,9 @@ class Sequencer extends Component {
             <button onClick={() => this.playSound()}> Kick </button>
             <button onClick={() => this.startLoop()}> Start </button>
             <button onClick={() => this.stopLoop()}> Stop </button>
+            <p>{this.state.position.toString().substring(7,0)}</p>
+            <p>{Tone.Transport.seconds.toString().substring(5,0)}</p>
+            <input type="range" min="-10000" max="0" onChange={this.volumeRange}></input>
             <div>
             {trackArray}
             </div>

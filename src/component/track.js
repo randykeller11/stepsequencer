@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux'
 import Tone from 'tone';
 import Square from './square'
 
@@ -22,8 +23,20 @@ class Track extends Component {
             row: props.rowLength,
             pattern: this.props.pattern,
             trackName: this.props.trackName,
-            position: this.props.position
+            id: this.props.id
         };
+    
+        const tempPattern = this.props.pattern;
+    
+    }
+
+
+    updatePattern = (id, status) => {
+        console.log(id + " + " + status);
+        status == "true" ? status = 1 : status = 0;
+        this.state.pattern[id] = status;
+        // console.log(this.state.pattern);
+        this.props.updatePattern(this.state.id, this.state.pattern)
     }
 
   render() {
@@ -40,14 +53,16 @@ class Track extends Component {
 
         rowArray.push(
         <div key={i} id={i} position={this.state.position} style={trackContainer}>
-          <Square status={status} id={i}/>
+          <Square status={status} id={i} update={this.updatePattern}/>
         </div>
       );
     }
+
+
     return(
       <div>
         <div style={trackNameContainer}>
-        {this.state.trackName}
+        <div onClick={() => this.updatePattern(rowArray)}>{this.state.trackName}</div>
         </div>
         {rowArray}
       </div>

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux'
 import Tone from 'tone';
 
 let squareStyle = {
@@ -33,13 +34,14 @@ let currentPos = {
 
     
     handleClick = event => {
-        console.log(this.state.id);
-        if(this.state.status == "true"){
+        if(this.state.status === "true"){
             this.setState({status: "false"});
+            this.props.update(this.state.id, "false");
         }
         else{
             this.setState({status: "true"});
-        }
+            this.props.update(this.state.id, "true");
+        }    
     }
 
     render() {

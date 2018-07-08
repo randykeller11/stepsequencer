@@ -5,17 +5,27 @@ import Knob from './component/knob';
 import Sequencer from './component/sequencer';
 import Tone from 'tone';
 
+import { createStore } from "redux";
 
-const patternBank = [];
-const songname = "Test Song";
-const pattern1 = {name: "pattern1", events: [[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0], [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],]};
+const reducer = (state, action) => {
+  console.log("something");
+  return state;
+}
+
+const initialState = {
+  patternBank : [],
+  songname : "Test Song",
+  pattern1 : {name: "pattern1", events: [[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0], [0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],]}
+}
+
+const store = createStore(reducer, initialState);
 
 class App extends Component {
   render() {
     return (
       <Fragment>
-        <h1>This is {songname} </h1>
-        <Sequencer pattern={pattern1} />
+        <h1>This is {store.getState().songname} </h1>
+        <Sequencer pattern={store.getState().pattern1} />
       </Fragment>
     );
   }
