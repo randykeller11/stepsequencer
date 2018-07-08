@@ -8,15 +8,13 @@ import Tone from 'tone';
 
 const patternBank = [];
 const songname = "Test Song";
-const pattern1 = {name: "pattern1", events: [[1,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0], [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0]]};
+const pattern1 = {name: "pattern1", events: [[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0], [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],]};
 
 class App extends Component {
   render() {
     return (
       <Fragment>
         <h1>This is {songname} </h1>
-        <Piano />
-        <Knob />
         <Sequencer pattern={pattern1} />
       </Fragment>
     );

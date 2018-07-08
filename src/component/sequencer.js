@@ -13,7 +13,8 @@ class Sequencer extends Component {
             position: 0,
             playing: false,
             steps: 16,
-            patternName: this.props.pattern.name
+            patternName: this.props.pattern.name,
+            tracks: ["Kick", "Snare", "Hihat", "Clap"]
         };
 
         this.kick = new Tone.Player({
@@ -36,6 +37,17 @@ class Sequencer extends Component {
 
 
     prepareEventGrid = () => {
+
+        let positionLoop = new Tone.Sequence((time, note) => {
+            console.log(this.state.position);
+            if(this.state.position >= this.state.steps){
+                this.setState({position: 0})
+            }
+            else{
+                this.setState({position: this.state.position + 1});
+            }
+
+        }, this.props.pattern.events[0],"8n").start(0);
         
         let kickLoop = new Tone.Sequence((time, note) => {
             if(note == 1){
@@ -77,22 +89,32 @@ class Sequencer extends Component {
 
     stopLoop = () => {
         Tone.Transport.stop();
+        this.setState({position: 0})
     }
 
     render(){
+
+        let trackArray = [];
+        for(let i=0; i < this.props.pattern.events.length; i++){
+            trackArray.push(
+                <div key={i} track={i}>
+                    <Track position={this.state.position} trackName={this.state.tracks[i]} rowLength={this.state.steps} pattern={this.props.pattern.events[i]}/>
+                </div>
+
+            )
+        }
+
         return(
         <Fragment>
-            <h1>{this.state.patternName}</h1>
             <button onClick={() => this.playSound()}> Kick </button>
             <button onClick={() => this.startLoop()}> Start </button>
             <button onClick={() => this.stopLoop()}> Stop </button>
-            <Track rowLength={this.state.steps}/>
+            <div>
+            {trackArray}
+            </div>
         </Fragment>
         )
     }
-
-
-
 }
 
 export default Sequencer;

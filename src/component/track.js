@@ -2,9 +2,16 @@ import React, { Component, Fragment } from 'react';
 import Tone from 'tone';
 import Square from './square'
 
-var trackContainer = {
+let trackContainer = {
   display: 'inline-block',
-  margin: '5px 2px'
+  margin: '0px 1px',
+}
+
+let trackNameContainer = {
+    display: 'inline-block',
+    width: '50px',
+    margin: '0px 0px 15px 0px',
+    // border: '1px solid'
 }
 
 class Track extends Component {
@@ -12,27 +19,36 @@ class Track extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            row: props.rowLength
-
+            row: props.rowLength,
+            pattern: this.props.pattern,
+            trackName: this.props.trackName,
+            position: this.props.position
         };
     }
-
-  handleClick = event => {
-    console.log(event.currentTarget.id);
-
-  }
 
   render() {
     let rowArray = [];
     for (let i = 0; i < this.state.row; i++) {
-      rowArray.push(
-        <div key={i} id={i} onClick={this.handleClick} style={trackContainer}>
-          <Square />
+
+        let status;
+        if(this.props.pattern[i] == "1"){
+            status = "true";
+        }
+        else{
+            status = "false";
+        }
+
+        rowArray.push(
+        <div key={i} id={i} position={this.state.position} style={trackContainer}>
+          <Square status={status} id={i}/>
         </div>
       );
     }
     return(
       <div>
+        <div style={trackNameContainer}>
+        {this.state.trackName}
+        </div>
         {rowArray}
       </div>
     );
