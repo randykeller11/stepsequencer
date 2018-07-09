@@ -21,7 +21,7 @@ const initialState = {
                        [0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0],
                        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
                        [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],],
-              synthEvents: [{name: "synthName", settings: "{type, release etc}"}]
+              synthEvents: [{name: "synthName", settings: "{type, release etc}", pattern: [{note: "A4", length: "8n"},0,0,0,0,0,0,0,1,0,0,0,0,0,0,0]}]
 
     }
 }
