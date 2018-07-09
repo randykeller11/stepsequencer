@@ -3,6 +3,7 @@ import Piano from './component/piano';
 import Chords from './component/chords';
 import Knob from './component/knob';
 import Sequencer from './component/sequencer';
+import PianoRoll from './component/pianoRoll'
 import Tone from 'tone';
 
 import { createStore } from "redux";
@@ -15,7 +16,14 @@ const reducer = (state, action) => {
 const initialState = {
   patternBank : [],
   songname : "Test Song",
-  pattern1 : {name: "pattern1", events: [[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0], [0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],]}
+  pattern1 : {name: "pattern1", 
+              events: [[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0], 
+                       [0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0],
+                       [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                       [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],],
+              synthEvents: [{name: "synthName", settings: "{type, release etc}"}]
+
+    }
 }
 
 const store = createStore(reducer, initialState);

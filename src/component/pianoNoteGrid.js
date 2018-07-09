@@ -1,53 +1,48 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux'
 import Tone from 'tone';
-import Square from './square'
+import Square from './pianoSquare'
+
+
+const gridStyle = {
+    height: '50px',
+    width: '50px'
+}
 
 let trackContainer = {
-  float: 'left',
-  margin: '1px',
-  height: '50px'
-}
-
-let scrollContainer = {
-}
+    float: 'left',
+    margin: '1px',
+    height: '50px'
+  }
 
 let trackNameContainer = {
     width: '50px',
     margin: '0px',
 }
 
-let rowHeight = {
-    height: '52px'
-}
-
-class Track extends Component {
+class PianoRoll extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            row: props.rowLength,
             pattern: this.props.pattern,
-            trackName: this.props.trackName,
-            id: this.props.id
+            osc: this.props.osc,
+            steps: this.props.steps
         };
     
-        const tempPattern = this.props.pattern;
-    
     }
-
 
     updatePattern = (id, status) => {
         console.log(id + " + " + status);
         status == "true" ? status = 1 : status = 0;
         this.state.pattern[id] = status;
         // console.log(this.state.pattern);
-        this.props.updatePattern(this.state.id, this.state.pattern)
+        // this.props.updatePattern(this.state.id, this.state.pattern)
     }
 
   render() {
     let rowArray = [];
-    for (let i = 0; i < this.state.row; i++) {
+    for (let i = 0; i < this.state.steps; i++) {
 
         let status;
         if(this.props.pattern[i] == "1"){
@@ -64,17 +59,13 @@ class Track extends Component {
       );
     }
 
-
+    
     return(
-      <div className="row" style={rowHeight}>
-        <div style={trackNameContainer}> <div>{this.state.trackName}</div>
-        </div>
-        <div style={scrollContainer}>
-        {rowArray}
-        </div>
-      </div>
+      <Fragment>
+          {rowArray}
+      </Fragment>
     );
   }
 }
 
-export default Track;
+export default PianoRoll;

@@ -1,7 +1,28 @@
 import React, { Component, Fragment } from 'react';
 import Tone from 'tone';
-
 import Track from './track'
+import PianoRoll from './pianoNoteGrid'
+
+let scrollContainer = {
+    // overflowY : 'auto',
+    marginLeft: '10px'
+}
+
+let numberDisplay = {
+    width: '75px'
+}
+
+let controlBoard = {
+    marginLeft: '200px',
+    marginBottom: '10px',
+    backgroundColor: 'gray',
+    width: '500px'
+}
+
+let pianoGridStyle = {
+    marginLeft: '30px'
+}
+
 
 class Sequencer extends Component {
     
@@ -13,10 +34,12 @@ class Sequencer extends Component {
             position: 0,
             playing: false,
             steps: 16,
+            currentStep: 0,
             noteDivision: "8n",
             patternName: this.props.pattern.name,
             tracks: ["Kick", "Snare", "Hihat", "Clap"],
-            pattern: this.props.pattern.events
+            pattern: this.props.pattern.events,
+            noteList: ["A4", "B4", "C5", "D5", "E5", "F5", "G5"]
         };
 
         this.kick = new Tone.Player({
@@ -54,7 +77,17 @@ class Sequencer extends Component {
 
         this.positionLoop = new Tone.Sequence((time, note) => {
             console.log(Tone.Transport.position);
+            if(this.state.currentStep >= this.state.steps){
+                this.setState({currentStep: 0})
+            }
+            else{
+                this.setState({currentStep: this.state.currentStep + 1})
+            }
+            
+            console.log(this.state.currentStep);
             this.setState({position: Tone.Transport.position})
+
+
         }, this.state.pattern[0], this.state.noteDivision).start(0);
         
         this.kickLoop = new Tone.Sequence((time, note) => {
@@ -88,7 +121,6 @@ class Sequencer extends Component {
     }
 
     updateTrackPattern = (track, pattern) => {
-        console.log(track + " is the track " + this.state.pattern[track]);
         this.positionLoop.dispose();
         this.kickLoop.dispose();
         this.snareLoop.dispose();
@@ -109,12 +141,16 @@ class Sequencer extends Component {
 
     stopLoop = () => {
         Tone.Transport.stop();
-        this.setState({position: 0})
+        this.setState({currentStep: 0})
     }
 
     volumeRange = (event) => {
         console.log(this.kickVol.volume.value);
-        this.hihatVol.volume.value = event.currentTarget.value;
+        Tone.Master.volume.value= event.currentTarget.value;
+    }
+
+    changePatternLength = () => {
+
     }
 
     render(){
@@ -122,7 +158,7 @@ class Sequencer extends Component {
         let trackArray = [];
         for(let i=0; i < this.props.pattern.events.length; i++){
             trackArray.push(
-                <div key={i} track={i}>
+                <div className="row" key={i} track={i}>
                     <Track id={i} 
                            position={this.state.position} 
                            updatePattern={this.updateTrackPattern} 
@@ -134,16 +170,42 @@ class Sequencer extends Component {
             )
         }
 
+        let pianoArray = [];
+
+        for(let i=0; i < this.state.noteList.length; i++){
+            pianoArray.push(
+                <div className="row" key={i} track={i}>
+                    <PianoRoll position={this.state.position} 
+                           updatePattern={this.updatePianoRoll}  
+                           steps={this.state.steps} 
+                           pattern={this.props.pattern} />
+                </div>
+
+            )
+        }
+
+
+
+
         return(
         <Fragment>
-            <button onClick={() => this.playSound()}> Kick </button>
-            <button onClick={() => this.startLoop()}> Start </button>
-            <button onClick={() => this.stopLoop()}> Stop </button>
-            <p>{this.state.position.toString().substring(7,0)}</p>
-            <p>{Tone.Transport.seconds.toString().substring(5,0)}</p>
-            <input type="range" min="-10000" max="0" onChange={this.volumeRange}></input>
-            <div>
-            {trackArray}
+            <div className="row" style={controlBoard}>
+                <button onClick={() => this.startLoop()}> Start </button>
+                <button onClick={() => this.stopLoop()}> Stop </button>
+                <div style={numberDisplay}>{this.state.position.toString().substring(7,0)}</div>
+                <div style={numberDisplay}>{Tone.Transport.seconds.toString().substring(5,0)}</div>
+                <input type="range" min="-60" max="3" onChange={this.volumeRange}></input>
+            </div>
+
+            <div className="row">
+            <div className="trackContainer" style={scrollContainer}>
+                {trackArray}
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-lg-12" style={pianoGridStyle}>
+                {pianoArray}
+                </div>
             </div>
         </Fragment>
         )
