@@ -11,7 +11,6 @@ const gridStyle = {
 
 let trackContainer = {
     float: 'left',
-    margin: '1px',
     height: '50px'
   }
 
@@ -26,6 +25,7 @@ class PianoRoll extends Component {
         super(props);
         this.state = {
             pattern: this.props.pattern,
+            row: this.props.row,
             osc: this.props.osc,
             steps: this.props.steps
         };
@@ -34,6 +34,7 @@ class PianoRoll extends Component {
 
     updatePattern = (id, status) => {
         console.log(id + " + " + status);
+        console.log(this.state.pattern);
         status == "true" ? status = 1 : status = 0;
         this.state.pattern[id] = status;
         // console.log(this.state.pattern);
@@ -45,7 +46,7 @@ class PianoRoll extends Component {
     for (let i = 0; i < this.state.steps; i++) {
 
         let status;
-        if(this.props.pattern[i] == "1"){
+        if(this.props.pattern[this.state.row][i] == "1"){
             status = "true";
         }
         else{

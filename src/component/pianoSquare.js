@@ -5,12 +5,14 @@ import Tone from 'tone';
 let squareStyle = {
     width: '50px',
     height: '50px',
+    border: 'black 1px solid',
     backgroundColor: 'green'
   }
 
 let squareStyleActive = {
     width: '50px',
     height: '50px',
+    border: 'black 1px solid',
     backgroundColor: 'orange'
   }
 

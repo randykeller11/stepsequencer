@@ -40,11 +40,12 @@ class Sequencer extends Component {
             playing: false,
             steps: 16,
             currentStep: 0,
-            noteDivision: "8n",
+            noteDivision: "4n",
             patternName: this.props.pattern.name,
             tracks: ["Kick", "Snare", "Hihat", "Clap"],
             pattern: this.props.pattern.events,
-            synthPattern: [],
+            synthBank: this.props.pattern.synthEvents,
+            currentSynthSettings: this.props.pattern.SynthEvents,
             noteList: ["A4", "B4", "C5", "D5", "E5", "F5", "G5"],
             synthlist: []
         };
@@ -77,13 +78,14 @@ class Sequencer extends Component {
         this.hiHatLoop;
         this.clapLoop;
 
-        this.synth1 = new Tone.Synth().toMaster()
+        this.synth1 = new Tone.PolySynth(7, Tone.Synth).toMaster()
 
       }
 
 
     prepareEventGrid = () => {
 
+        //need to make this dynamic
         this.positionLoop = new Tone.Sequence((time, note) => {
             console.log(Tone.Transport.position);
             if(this.state.currentStep >= this.state.steps){
@@ -137,8 +139,27 @@ class Sequencer extends Component {
 
     }
 
+    preparePianoGrid = () => {
+
+        this.synthLoop = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.synth1.triggerAttackRelease(['C4','E4','G4','B4'], '4n');
+            }
+            
+        }, this.state.synthBank[0].pattern[0], this.state.noteDivision).start(0);
+
+
+
+
+
+
+
+
+    }
+
     componentDidMount = () => {
         this.prepareEventGrid();
+        this.preparePianoGrid();
     }
 
     updateTrackPattern = (track, pattern) => {
@@ -172,13 +193,10 @@ class Sequencer extends Component {
 
     changeBPM = (event) => {
         Tone.Transport.bpm.value = event.currentTarget.value;
-
         this.setState({bpm: Math.floor(Tone.Transport.bpm.value)})
-
     }
 
     changePatternLength = () => {
-
     }
 
     render(){
@@ -206,7 +224,8 @@ class Sequencer extends Component {
                     <PianoRoll position={this.state.position} 
                            updatePattern={this.updatePianoRoll}  
                            steps={this.state.steps} 
-                           pattern={this.props.pattern} />
+                           pattern={this.state.synthBank[0].pattern}
+                           row={i} />
                 </div>
 
             )

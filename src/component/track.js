@@ -5,7 +5,6 @@ import Square from './square'
 
 let trackContainer = {
   float: 'left',
-  margin: '1px',
   height: '50px'
 }
 
@@ -66,13 +65,11 @@ class Track extends Component {
 
 
     return(
-      <div className="row" style={rowHeight}>
+        <Fragment>
         <div style={trackNameContainer}> <div>{this.state.trackName}</div>
         </div>
-        <div style={scrollContainer}>
         {rowArray}
-        </div>
-      </div>
+        </Fragment>
     );
   }
 }
