@@ -16,11 +16,16 @@ let controlBoard = {
     marginLeft: '200px',
     marginBottom: '10px',
     backgroundColor: 'gray',
-    width: '500px'
+    width: '600px'
 }
 
 let pianoGridStyle = {
     marginLeft: '30px'
+}
+
+let sliderStyle = {
+    marginLeft: '5px',
+    marginRight: '5px'
 }
 
 
@@ -149,6 +154,13 @@ class Sequencer extends Component {
         Tone.Master.volume.value= event.currentTarget.value;
     }
 
+    changeBPM = (event) => {
+        Tone.Transport.bpm.value = event.currentTarget.value;
+
+        this.setState({bpm: Math.floor(Tone.Transport.bpm.value)})
+
+    }
+
     changePatternLength = () => {
 
     }
@@ -192,15 +204,22 @@ class Sequencer extends Component {
             <div className="row" style={controlBoard}>
                 <button onClick={() => this.startLoop()}> Start </button>
                 <button onClick={() => this.stopLoop()}> Stop </button>
-                <div style={numberDisplay}>{this.state.position.toString().substring(7,0)}</div>
-                <div style={numberDisplay}>{Tone.Transport.seconds.toString().substring(5,0)}</div>
-                <input type="range" min="-60" max="3" onChange={this.volumeRange}></input>
+                <div style={numberDisplay}>{this.state.position.toString().substring(8,0)}</div>
+                <div style={numberDisplay}>{Math.floor(Tone.Transport.seconds * 100) / 100}</div>
+                <input type="range" min="-60" max="5" defaultValue="0" style={sliderStyle} onChange={this.volumeRange}></input>
+                <p>BPM: {this.state.bpm} </p>
+                <input type="range" min="40" max="200" defaultValue="120" onChange={this.changeBPM} style={sliderStyle}></input>
             </div>
 
             <div className="row">
             <div className="trackContainer" style={scrollContainer}>
                 {trackArray}
                 </div>
+            </div>
+            <div className="row">
+            <div className="col-lg-12" style={pianoGridStyle}>
+                        Oscillator Control Stuff
+            </div>
             </div>
             <div className="row">
                 <div className="col-lg-12" style={pianoGridStyle}>
