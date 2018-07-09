@@ -17,12 +17,21 @@ const initialState = {
   patternBank : [],
   songname : "Test Song",
   pattern1 : {name: "pattern1", 
-              events: [[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0], 
+              events: [[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0], 
                        [0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0],
-                       [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                       [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],],
-              synthEvents: [{name: "synthName", settings: "{type, release etc}", pattern: [{note: "A4", length: "8n"},0,0,0,0,0,0,0,1,0,0,0,0,0,0,0]}]
-
+                       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                       [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],
+                       [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0]],
+                       
+              synthEvents: [{name: "synthName", 
+                            settings: "{type, release etc}", 
+                            pattern: [[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], 
+                                      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], 
+                                      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                                      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                                      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                                      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                                      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]}]
     }
 }
 
@@ -33,6 +42,7 @@ class App extends Component {
     return (
       <Fragment>
         <h1>This is {store.getState().songname} </h1>
+        <Piano />
         <Sequencer pattern={store.getState().pattern1} />
       </Fragment>
     );

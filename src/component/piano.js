@@ -22,7 +22,7 @@ class Piano extends Component {
     
         console.log(input);
         let currentTime = Tone.now();
-        synth1.triggerAttackRelease(input, '8n', currentTime + 0)
+        synth1.triggerAttackRelease(input, '4n', currentTime + 0)
     }
 
 

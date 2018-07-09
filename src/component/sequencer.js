@@ -44,7 +44,9 @@ class Sequencer extends Component {
             patternName: this.props.pattern.name,
             tracks: ["Kick", "Snare", "Hihat", "Clap"],
             pattern: this.props.pattern.events,
-            noteList: ["A4", "B4", "C5", "D5", "E5", "F5", "G5"]
+            synthPattern: [],
+            noteList: ["A4", "B4", "C5", "D5", "E5", "F5", "G5"],
+            synthlist: []
         };
 
         this.kick = new Tone.Player({
@@ -75,6 +77,8 @@ class Sequencer extends Component {
         this.hiHatLoop;
         this.clapLoop;
 
+        this.synth1 = new Tone.Synth().toMaster()
+
       }
 
 
@@ -89,6 +93,7 @@ class Sequencer extends Component {
                 this.setState({currentStep: this.state.currentStep + 1})
             }
             
+            console.log(Tone.TransportTime().toBarsBeatsSixteenths())
             console.log(this.state.currentStep);
             this.setState({position: Tone.Transport.position})
 
@@ -99,11 +104,22 @@ class Sequencer extends Component {
             if(note == 1){
                 this.kick.start();
             }
+            else if(note == 2){
+                this.kick.start();
+                setTimeout(() => this.kick.start, 100);
+
+            }
         }, this.state.pattern[0], this.state.noteDivision).start(0);
 
         this.snareLoop = new Tone.Sequence((time, note) => {
             if(note == 1){
                 this.snare.start();
+            }
+            else if(note == 2){
+                this.snare.start();
+                setTimeout(() => 
+                    this.snare.start, 200);
+
             }
         }, this.state.pattern[1], this.state.noteDivision).start(0);
 
