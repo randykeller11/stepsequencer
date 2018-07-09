@@ -47,7 +47,8 @@ class Sequencer extends Component {
             synthBank: this.props.pattern.synthEvents,
             currentSynthSettings: this.props.pattern.SynthEvents,
             noteList: ["A4", "B4", "C5", "D5", "E5", "F5", "G5"],
-            synthlist: []
+            synthlist: [],
+            oscillatorSettings: {type: "triangle"}
         };
 
         this.kick = new Tone.Player({
@@ -77,8 +78,9 @@ class Sequencer extends Component {
         this.snareLoop;
         this.hiHatLoop;
         this.clapLoop;
-
-        this.synth1 = new Tone.PolySynth(7, Tone.Synth).toMaster()
+        this.synth = Tone.Synth;
+        this.synth1 = new Tone.PolySynth(7, Tone.Synth, {
+			"oscillator" : this.state.oscillatorSettings}).toMaster()
 
       }
 
@@ -139,21 +141,56 @@ class Sequencer extends Component {
 
     }
 
-    preparePianoGrid = () => {
+    preparePianoGrid = (synth, pattern) => {
 
         this.synthLoop = new Tone.Sequence((time, note) => {
             if(note == 1){
-                this.synth1.triggerAttackRelease(['C4','E4','G4','B4'], '4n');
+                this.synth1.triggerAttackRelease([this.state.noteList[0]], '4n');
             }
             
         }, this.state.synthBank[0].pattern[0], this.state.noteDivision).start(0);
 
+        this.synthLoop1 = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.synth1.triggerAttackRelease([this.state.noteList[1]], '4n');
+            }
+            
+        }, this.state.synthBank[0].pattern[1], this.state.noteDivision).start(0);
 
+        this.synthLoop2 = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.synth1.triggerAttackRelease([this.state.noteList[2]], '4n');
+            }
+            
+        }, this.state.synthBank[0].pattern[2], this.state.noteDivision).start(0);
 
+        this.synthLoop3 = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.synth1.triggerAttackRelease([this.state.noteList[3]], '4n');
+            }
+            
+        }, this.state.synthBank[0].pattern[3], this.state.noteDivision).start(0);
 
+        this.synthLoop4 = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.synth1.triggerAttackRelease([this.state.noteList[4]], '4n');
+            }
+            
+        }, this.state.synthBank[0].pattern[4], this.state.noteDivision).start(0);
 
+        this.synthLoop5 = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.synth1.triggerAttackRelease([this.state.noteList[5]], '4n');
+            }
+            
+        }, this.state.synthBank[0].pattern[5], this.state.noteDivision).start(0);
 
-
+        this.synthLoop6 = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.synth1.triggerAttackRelease([this.state.noteList[6]], '4n');
+            }
+            
+        }, this.state.synthBank[0].pattern[6], this.state.noteDivision).start(0);
 
     }
 
@@ -170,6 +207,21 @@ class Sequencer extends Component {
         this.clapLoop.dispose();
 
         this.prepareEventGrid();
+    }
+
+    updatePianoRoll = (track, pattern) => {
+
+        console.log(this.state.synthBank[0].pattern);
+        this.synthLoop.dispose();
+        this.synthLoop1.dispose();
+        this.synthLoop2.dispose();
+        this.synthLoop3.dispose();
+        this.synthLoop4.dispose();
+        this.synthLoop5.dispose();
+        this.synthLoop6.dispose();
+
+
+        this.preparePianoGrid();
     }
 
     playSound = () => {
@@ -261,6 +313,7 @@ class Sequencer extends Component {
                 {pianoArray}
                 </div>
             </div>
+            <button onClick={this.changePatternLength}>Add to array</button>
         </Fragment>
         )
     }

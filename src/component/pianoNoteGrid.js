@@ -33,12 +33,12 @@ class PianoRoll extends Component {
     }
 
     updatePattern = (id, status) => {
-        console.log(id + " + " + status);
-        console.log(this.state.pattern);
-        status == "true" ? status = 1 : status = 0;
-        this.state.pattern[id] = status;
+        // console.log(id + " + " + status);
         // console.log(this.state.pattern);
-        // this.props.updatePattern(this.state.id, this.state.pattern)
+        status == "true" ? status = 1 : status = 0;
+        this.state.pattern[this.state.row][id] = status;
+        // console.log(this.state.pattern);
+        this.props.updatePattern(this.state.id, this.state.pattern)
     }
 
   render() {
