@@ -29,7 +29,8 @@ class PianoRoll extends Component {
         this.state = {
             pattern: this.props.pattern,
             osc: this.props.osc,
-            steps: this.props.steps
+            steps: this.props.steps,
+            position: this.props.position
         };
     
     }
@@ -44,6 +45,7 @@ class PianoRoll extends Component {
 
   render() {
     let rowArray = [];
+    
     for (let i = 0; i < this.state.steps; i++) {
 
         let status;
@@ -55,7 +57,7 @@ class PianoRoll extends Component {
         }
 
         rowArray.push(
-        <div key={i} id={i} position={this.state.position} style={trackContainer}>
+        <div key={i} id={i} position={this.props.position} style={trackContainer}>
           <Square status={status} id={i} update={this.updatePattern}/>
         </div>
       );

@@ -28,7 +28,8 @@ class Track extends Component {
             row: props.rowLength,
             pattern: this.props.pattern,
             trackName: this.props.trackName,
-            id: this.props.id
+            id: this.props.id,
+            position: this.props.position
         };
     
         const tempPattern = this.props.pattern;
@@ -45,6 +46,7 @@ class Track extends Component {
     }
 
   render() {
+
     let rowArray = [];
     for (let i = 0; i < this.state.row; i++) {
 
@@ -58,7 +60,7 @@ class Track extends Component {
 
         rowArray.push(
         <div key={i} id={i} position={this.state.position} style={trackContainer}>
-          <Square status={status} id={i} update={this.updatePattern}/>
+          <Square status={status} id={i} update={this.updatePattern} position={this.props.position} beat={this.props.beat} playing={this.props.playing}/>
         </div>
       );
     }

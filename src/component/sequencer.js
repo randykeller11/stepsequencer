@@ -20,7 +20,8 @@ let controlBoard = {
 }
 
 let pianoGridStyle = {
-    marginLeft: '0px'
+    marginLeft: '0px',
+    overflowX: 'auto'
 }
 
 let sliderStyle = {
@@ -48,7 +49,7 @@ class Sequencer extends Component {
             currentSynthSettings: this.props.pattern.SynthEvents,
             noteList: ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5"],
             synthlist: [],
-            oscillatorSettings: {type: "triangle"}
+            oscillatorSettings: {type: "square"}
         };
 
         this.kick = new Tone.Player({
@@ -73,6 +74,8 @@ class Sequencer extends Component {
         this.hihatVol = new Tone.PanVol();
         this.hihat.chain(this.hihatVol, Tone.Master);
 
+        this.chorus = new Tone.Chorus(4, 2.5, 0.5);
+
         this.positionLoop;
         this.kickLoop;
         this.snareLoop;
@@ -80,8 +83,8 @@ class Sequencer extends Component {
         this.clapLoop;
         this.synth = Tone.Synth;
         this.synth1 = new Tone.PolySynth(14, Tone.Synth, {
-			"oscillator" : this.state.oscillatorSettings}).toMaster()
-
+            "oscillator" : this.state.oscillatorSettings}).connect(this.chorus).toMaster()
+            
       }
 
 
@@ -89,16 +92,14 @@ class Sequencer extends Component {
 
         //need to make this dynamic
         this.positionLoop = new Tone.Sequence((time, note) => {
-            console.log(Tone.Transport.position);
-            if(this.state.currentStep >= this.state.steps){
+            if(this.state.currentStep > this.state.steps - 2){
                 this.setState({currentStep: 0})
             }
             else{
                 this.setState({currentStep: this.state.currentStep + 1})
             }
-            
-            console.log(Tone.TransportTime().toBarsBeatsSixteenths())
-            console.log(this.state.currentStep);
+        
+            console.log(this.state.currentStep + " is the top level current step");
             this.setState({position: Tone.Transport.position})
 
 
@@ -288,11 +289,13 @@ class Sequencer extends Component {
 
     startLoop = () => {        
         Tone.Transport.start();
+        this.setState({playing: true})
     }
 
     stopLoop = () => {
         Tone.Transport.stop();
         this.setState({currentStep: 0})
+        this.setState({playing: false})
     }
 
     volumeRange = (event) => {
@@ -315,11 +318,13 @@ class Sequencer extends Component {
             trackArray.push(
                 <div className="row" key={i} track={i}>
                     <Track id={i} 
-                           position={this.state.position} 
+                           position={this.state.currentStep}
+                           beat={this.state.position}
                            updatePattern={this.updateTrackPattern} 
                            trackName={this.state.tracks[i]} 
                            rowLength={this.state.steps} 
-                           pattern={this.props.pattern.events[i]}/>
+                           pattern={this.props.pattern.events[i]}
+                           playing={this.state.playing}/>
                 </div>
 
             )
@@ -330,12 +335,13 @@ class Sequencer extends Component {
         for(let i=0; i < this.state.noteList.length; i++){
             pianoArray.push(
                 <div className="row" key={i} track={i}>
-                    <PianoRoll position={this.state.position} 
+                    <PianoRoll position={this.state.currentStep} 
                            updatePattern={this.updatePianoRoll}
                            note={this.state.noteList[i]}  
                            steps={this.state.steps} 
                            pattern={this.state.synthBank[0].pattern}
-                           row={i} />
+                           row={i} 
+                           playing={this.state.playing} />
                 </div>
 
             )
@@ -362,7 +368,7 @@ class Sequencer extends Component {
                 </div>
             </div>
             <div className="row">
-            <div className="col-lg-12" style={pianoGridStyle}>
+            <div className="col-lg-12">
                         Oscillator Control Stuff
             </div>
             </div>

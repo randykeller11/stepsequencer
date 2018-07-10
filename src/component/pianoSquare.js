@@ -19,7 +19,8 @@ let squareStyleActive = {
 let currentPos = {
     width: '50px',
     height: '50px',
-    backgroundColor: 'yellow'
+    backgroundColor: 'yellow',
+    border: 'black 1px solid',
   }
 
   class PianoSquare extends Component {
@@ -30,7 +31,8 @@ let currentPos = {
             status: this.props.status,
             id: this.props.id,
             note: this.props.row,
-            position: this.props.position
+            position: this.props.position,
+            beat: this.props.beat
         };
     }
 
@@ -49,7 +51,14 @@ let currentPos = {
     render() {
         
         let currentStyle;
-        if(this.state.status == "true"){
+
+        if(this.props.position == 0 && this.state.id == 15 && this.props.playing == true){
+            currentStyle = currentPos;
+        }
+        else if(this.props.position - 1 == this.state.id && this.props.playing == true){
+            currentStyle = currentPos;
+        }
+        else if(this.state.status == "true"){
             currentStyle = squareStyleActive;
         }
         else{

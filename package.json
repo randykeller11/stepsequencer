@@ -6,6 +6,7 @@
     "react": "^16.4.1",
     "react-canvas-knob": "^0.5.0",
     "react-dom": "^16.4.1",
+    "react-interactjs": "^0.1.2",
     "react-redux": "^5.0.7",
     "react-rotary-knob": "^1.1.1",
     "react-scripts": "1.1.4",

@@ -56,7 +56,7 @@ class PianoRoll extends Component {
 
         rowArray.push(
         <div key={i} id={i} position={this.state.position} style={trackContainer}>
-          <Square status={status} id={i} update={this.updatePattern}/>
+          <Square status={status} id={i} update={this.updatePattern} position={this.props.position} playing={this.props.playing}/>
         </div>
       );
     }
