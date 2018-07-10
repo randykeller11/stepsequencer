@@ -25,6 +25,7 @@ class PianoRoll extends Component {
         super(props);
         this.state = {
             pattern: this.props.pattern,
+            note: this.props.note,
             row: this.props.row,
             osc: this.props.osc,
             steps: this.props.steps
@@ -63,6 +64,8 @@ class PianoRoll extends Component {
     
     return(
       <Fragment>
+          <div style={trackNameContainer}> <div>{this.state.note}</div>
+        </div>
           {rowArray}
       </Fragment>
     );

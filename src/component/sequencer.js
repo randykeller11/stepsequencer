@@ -20,7 +20,7 @@ let controlBoard = {
 }
 
 let pianoGridStyle = {
-    marginLeft: '30px'
+    marginLeft: '0px'
 }
 
 let sliderStyle = {
@@ -142,7 +142,6 @@ class Sequencer extends Component {
     }
 
     preparePianoGrid = (synth, pattern) => {
-
         this.synthLoop = new Tone.Sequence((time, note) => {
             if(note == 1){
                 this.synth1.triggerAttackRelease([this.state.noteList[0]], '4n');
@@ -229,7 +228,6 @@ class Sequencer extends Component {
     }
 
     startLoop = () => {        
-        Tone.Transport.bpm.value = 140;
         Tone.Transport.start();
     }
 
@@ -274,7 +272,8 @@ class Sequencer extends Component {
             pianoArray.push(
                 <div className="row" key={i} track={i}>
                     <PianoRoll position={this.state.position} 
-                           updatePattern={this.updatePianoRoll}  
+                           updatePattern={this.updatePianoRoll}
+                           note={this.state.noteList[i]}  
                            steps={this.state.steps} 
                            pattern={this.state.synthBank[0].pattern}
                            row={i} />
