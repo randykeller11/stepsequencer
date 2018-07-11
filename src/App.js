@@ -9,9 +9,10 @@ import Tone from 'tone';
 import { createStore } from "redux";
 
 const reducer = (state, action) => {
-  console.log("something");
   return state;
 }
+
+console.log ("Hey guys");
 
 const initialState = {
   patternBank : [],
