@@ -50,7 +50,7 @@ class PianoRoll extends Component {
   render() {
 
     // console.log("// state //")
-    console.log(this.state.pattern);
+    // console.log(this.state.pattern);
     // console.log("// props //")
     // console.log(this.props.pattern);
 

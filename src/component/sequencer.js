@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Tone from 'tone';
 import Track from './track'
 import PianoRoll from './pianoNoteGrid'
+import Knob from './knob'
 
 let scrollContainer = {
     // overflowY : 'auto',
@@ -29,6 +30,11 @@ let sliderStyle = {
     marginRight: '5px'
 }
 
+let knobStyle = {
+    width: '50px',
+    height: '50px'
+}
+
 
 class Sequencer extends Component {
     
@@ -43,6 +49,7 @@ class Sequencer extends Component {
             currentPattern: 0,
             currentStep: 0,
             noteDivision: "4n",
+            volume: 0,
             patternName: this.props.pattern.name,
             tracks: ["Kick", "Snare", "Hihat", "O Hihat", "Clap", "Tom 1", "Tom 2", "Tom 3"],
             pattern: this.props.pattern.events,
@@ -363,12 +370,14 @@ class Sequencer extends Component {
 
     changePatternLength = () => {
         // this.preparePianoGridDynamic(1, 0, 0, '4n')
-        if(this.state.currentSynthSelection == 1){
-            this.setState({currentSynthSelection: 0});
-        }
-        else{
-            this.setState({currentSynthSelection: 1});
-        }
+        // if(this.state.currentSynthSelection == 1){
+        //     this.setState({currentSynthSelection: 0});
+        // }
+        // else{
+        //     this.setState({currentSynthSelection: 1});
+        // }
+
+        console.log(this.state.synthBank[this.state.currentSynthSelection].pattern);
     }
 
     componentDidMount = () => {
@@ -388,7 +397,7 @@ class Sequencer extends Component {
 
     updatePianoRoll = (track, pattern) => {
 
-        console.log(this.state.synthBank[0].pattern);
+        // console.log(this.state.synthBank[0].pattern);
         this.synthLoop.dispose();
         this.synthLoop1.dispose();
         this.synthLoop2.dispose();
@@ -447,6 +456,18 @@ class Sequencer extends Component {
     volumeRange = (event) => {
         console.log(this.kickVol.volume.value);
         Tone.Master.volume.value= event.currentTarget.value;
+        this.setState({volume: event.currentTarget.value })
+    }
+
+    volumeKnob = (volume) => {
+        Tone.Master.volume.value= volume - 95;
+        this.setState({volume: volume - 95})
+    }
+
+    bpmKnob = (BPM) => {
+        Tone.Transport.bpm.value = BPM;
+        this.setState({bpm: Math.floor(Tone.Transport.bpm.value)})
+
     }
 
     changeBPM = (event) => {
@@ -454,9 +475,14 @@ class Sequencer extends Component {
         this.setState({bpm: Math.floor(Tone.Transport.bpm.value)})
     }
 
+    getVolume = () => {
+
+    }
+
     render(){
 
         // console.log(this.state.currentSynthSelection);
+
 
         let trackArray = [];
         for(let i=0; i < this.props.pattern.events.length; i++){
@@ -468,7 +494,7 @@ class Sequencer extends Component {
                            updatePattern={this.updateTrackPattern} 
                            trackName={this.state.tracks[i]} 
                            rowLength={this.state.steps} 
-                           pattern={this.props.pattern.events[i]}
+                           pattern={this.state.pattern[i]}
                            playing={this.state.playing}/>
                 </div>
 
@@ -478,7 +504,7 @@ class Sequencer extends Component {
         let pianoArray = [];
 
         for(let i=0; i < this.state.noteList[0].length; i++){
-            console.log(this.state.currentSynthSelection + "is the selection");
+            // console.log(this.state.currentSynthSelection + "is the selection");
             pianoArray.push(
                 <div className="row" key={i} track={i}>
                     <PianoRoll position={this.state.currentStep} 
@@ -524,9 +550,10 @@ class Sequencer extends Component {
                 <button onClick={() => this.stopLoop()}> Stop </button>
                 <div style={numberDisplay}>{this.state.position.toString().substring(8,0)}</div>
                 <div style={numberDisplay}>{Math.floor(Tone.Transport.seconds * 100) / 100}</div>
-                <input type="range" min="-60" max="5" defaultValue="0" style={sliderStyle} onChange={this.volumeRange}></input>
+                {/* <input type="range" min="-60" max="5" defaultValue="0" style={sliderStyle} onChange={this.volumeRange}></input> */}
+                <Knob update={this.volumeKnob} volume={this.state.volume} />
                 <p>BPM: {this.state.bpm} </p>
-                <input type="range" min="40" max="200" defaultValue="120" onChange={this.changeBPM} style={sliderStyle}></input>
+                <input type="range" width="25" height="50" min="40" max="200" defaultValue="120" onChange={this.changeBPM} style={sliderStyle}></input>
             </div>
 
             <div className="row">
