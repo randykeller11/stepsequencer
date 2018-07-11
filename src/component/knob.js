@@ -22,8 +22,8 @@ class Knob extends React.Component {
       <KnobClass
         value={this.state.value}
         onChange={this.handleChange}
-        height='50'
-        width='50'
+        height={50}
+        width={50}
       />
     );
   }

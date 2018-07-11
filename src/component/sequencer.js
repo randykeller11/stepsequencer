@@ -17,7 +17,8 @@ let controlBoard = {
     marginLeft: '200px',
     marginBottom: '10px',
     backgroundColor: 'gray',
-    width: '600px'
+    width: '600px',
+    height: '100px'
 }
 
 let pianoGridStyle = {
@@ -33,6 +34,39 @@ let sliderStyle = {
 let knobStyle = {
     width: '50px',
     height: '50px'
+}
+
+let waveformStyle = {
+    width: '75px',
+    height: '75px',
+    backgroundColor: 'green',
+    marginTop: '2px',
+    marginLeft: '3px',
+    borderRadius: '5px',
+    boxShadow: '0 9px #999'
+}
+
+let waveformStyleActive = {
+    width: '75px',
+    height: '70px',
+    backgroundColor: 'yellow',
+    marginTop: '2px',
+    marginLeft: '3px',
+    transform: 'translateY(5px)',
+    transition: '250ms ease-in-out',
+    borderRadius: '5px',
+    boxShadow: '0 9px #666'
+}
+
+
+let waveformStyleBox = {
+    marginTop: '5px',
+    marginLeft: '15px'
+}
+
+let imageContainer = {
+    width: '75px',
+    height: '75px'
 }
 
 
@@ -62,7 +96,7 @@ class Sequencer extends Component {
                        ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5"],
         ],
             synthlist: [],
-            oscillatorSettings: [{type: "triangle"}, {type: "square"}]
+            oscillatorSettings: [{type: "triangle"}, {type: "square"}, {type: "triangle"}, {type: "triangle"}]
         };
 
         this.kick = new Tone.Player({
@@ -87,7 +121,7 @@ class Sequencer extends Component {
         this.hihatVol = new Tone.PanVol();
         this.hihat.chain(this.hihatVol, Tone.Master);
 
-        this.chorus = new Tone.Chorus(4, 2.5, 0.5);
+        this.chorus = new Tone.Chorus(0, 0, 0);
 
         this.positionLoop;
         this.kickLoop;
@@ -98,6 +132,8 @@ class Sequencer extends Component {
 
         this.synth1;
         this.synth2;
+        this.synth3;
+        this.synth4;
       
 
       }
@@ -378,18 +414,12 @@ class Sequencer extends Component {
     }
 
     preparePianoGridDynamic = (synth, voice, pattern, time, note) => {
-        let trackName = "track" + synth + voice.toString();
+        let trackName = "track" + synth + voice;
         console.log(trackName);
     } 
 
     changePatternLength = () => {
-        // // this.preparePianoGridDynamic(1, 0, 0, '4n')
-        if(this.state.currentSynthSelection == 1){
-            this.setState({currentSynthSelection: 0});
-        }
-        else{
-            this.setState({currentSynthSelection: 1});
-        }
+        this.preparePianoGridDynamic(1, 0, 0, '4n')
 
         // this.setState({steps: 32})
 
@@ -489,12 +519,34 @@ class Sequencer extends Component {
 
     }
 
-    handleSynthOscSettings = (event) => {
+    changeSynthSelection = (event) => {
+
+        console.log(event.target.value);
+        this.setState({currentSynthSelection: event.target.value});
+        console.log(this.state.currentSynthSelection);
+
+    }
+
+    // handleSynthOscSettings = (event) => {
+    
+    //     this.synth1.dispose();
+    //     this.synth2.dispose();
+    //     let tempSettings = this.state.oscillatorSettings
+    //     tempSettings[this.state.currentSynthSelection].type = event.target.value;
+    //     console.log(tempSettings);
+    //     this.setState({oscillatorSettings: tempSettings})
+    //     this.prepareSynths();
+
+
+    // }
+
+    handleSynthOscSettings = (wave) => {
     
         this.synth1.dispose();
         this.synth2.dispose();
+        console.log(wave);
         let tempSettings = this.state.oscillatorSettings
-        tempSettings[this.state.currentSynthSelection].type = event.target.value;
+        tempSettings[this.state.currentSynthSelection].type = wave;
         console.log(tempSettings);
         this.setState({oscillatorSettings: tempSettings})
         this.prepareSynths();
@@ -560,7 +612,39 @@ class Sequencer extends Component {
             }
         }
 
+        if(this.state.currentSynthSelection == 2){
+            for(let i=0; i < this.state.noteList[0].length; i++){
+                pianoArray.push(
+                    <div className="row" key={i} track={i}>
+                    <span></span><span></span>
+                        <PianoRoll position={this.state.currentStep} 
+                               updatePattern={this.updatePianoRoll}
+                               note={this.state.noteList[this.state.currentSynthSelection][i]}  
+                               steps={this.state.steps} 
+                               pattern={this.state.synthBank[this.state.currentSynthSelection].pattern}
+                               row={i} 
+                               playing={this.state.playing} />
+                    </div>
+                )
+            }
+        }
 
+        if(this.state.currentSynthSelection == 3){
+            for(let i=0; i < this.state.noteList[0].length; i++){
+                pianoArray.push(
+                    <div className="row" key={i} track={i}>
+                    <span></span><span></span><span></span>
+                        <PianoRoll position={this.state.currentStep} 
+                               updatePattern={this.updatePianoRoll}
+                               note={this.state.noteList[this.state.currentSynthSelection][i]}  
+                               steps={this.state.steps} 
+                               pattern={this.state.synthBank[this.state.currentSynthSelection].pattern}
+                               row={i} 
+                               playing={this.state.playing} />
+                    </div>
+                )
+            }
+        }
 
         return(
         <Fragment>
@@ -584,14 +668,27 @@ class Sequencer extends Component {
                 </div>
             </div>
             <div className="row">
-            <button onClick={this.changePatternLength}>Switch</button>
-            <button onClick={this.addPatternLength}>Function test #1</button>
+            <div className="col-lg-12">
+                <button value="0" onClick={this.changeSynthSelection}>Synth #1</button>
+                <button value="1" onClick={this.changeSynthSelection}>Synth #2</button>
+                <button value="2" onClick={this.changeSynthSelection}>Synth #3</button>
+                <button value="3" onClick={this.changeSynthSelection}>Synth #4</button>
+            </div>
+            <div className="col-lg-12">
+                <div className="row">
+                    <button onClick={this.changePatternLength}>Switch</button>
+                    <button onClick={this.preparePianoGridDynamic}>Function test #1</button>
+                </div>
+            </div>
             <div className="col-lg-12">
                 <div className="row" style={controlBoard}>
-                        current Synth is {this.state.currentSynthSelection};
-                        <input type="radio" name="wave" value="square" id="Square" onChange={this.handleSynthOscSettings} checked={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "square"} ></input> <p>Square</p>
-                        <input type="radio" name="wave" value="triangle" id="Saw" onChange={this.handleSynthOscSettings} checked={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "triangle"}></input> <p>Saw</p>
-                        <input type="radio" name="wave" value="sine" id="Sine" onChange={this.handleSynthOscSettings} checked={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sine"}></input> <p> Sine</p>
+                    <div className="row" style={waveformStyleBox}>
+                        <div onClick={() => this.handleSynthOscSettings("square")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "square" ? waveformStyleActive : waveformStyle} value="square"><img src="../../square.png" style={imageContainer}></img></div>
+                        <div onClick={() => this.handleSynthOscSettings("triangle")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "triangle" ? waveformStyleActive : waveformStyle} value="triangle"><img src="../../triangle.png" style={imageContainer}></img></div>
+                        <div onClick={() => this.handleSynthOscSettings("sine")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sine" ? waveformStyleActive : waveformStyle} value="sine"><img src="../../sine.png" style={imageContainer}></img></div>
+                        <div onClick={() => this.handleSynthOscSettings("sawtooth")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sawtooth" ? waveformStyleActive : waveformStyle} value="sawtooth"><img src="../../saw.png" style={imageContainer}></img></div>
+                    {/* </div> */}
+                    </div>
                 </div>
             </div>
             </div>
