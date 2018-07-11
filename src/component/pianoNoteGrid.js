@@ -33,21 +33,32 @@ class PianoRoll extends Component {
     
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+          pattern: nextProps.pattern
+        });
+      }
+
     updatePattern = (id, status) => {
-        // console.log(id + " + " + status);
-        // console.log(this.state.pattern);
         status == "true" ? status = 1 : status = 0;
         this.state.pattern[this.state.row][id] = status;
-        // console.log(this.state.pattern);
         this.props.updatePattern(this.state.id, this.state.pattern)
     }
 
+
+
   render() {
+
+    // console.log("// state //")
+    console.log(this.state.pattern);
+    // console.log("// props //")
+    // console.log(this.props.pattern);
+
     let rowArray = [];
     for (let i = 0; i < this.state.steps; i++) {
 
         let status;
-        if(this.props.pattern[this.state.row][i] == "1"){
+        if(this.state.pattern[this.state.row][i] == "1"){
             status = "true";
         }
         else{

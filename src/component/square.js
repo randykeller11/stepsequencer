@@ -48,10 +48,7 @@ let currentPos = {
         }    
     }
 
-    render() {
-
-        console.log(this.props.beat)
-        
+    render() {        
         let currentStyle;
         if(this.props.position == 0 && this.state.id == 15 && this.props.playing == true){
             currentStyle = currentPos;
