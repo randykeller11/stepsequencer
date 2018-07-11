@@ -45,7 +45,7 @@ class Sequencer extends Component {
             bpm: 120,
             position: 0,
             playing: false,
-            steps: 16,
+            steps: 32,
             currentPattern: 0,
             currentStep: 0,
             noteDivision: "4n",
@@ -369,7 +369,7 @@ class Sequencer extends Component {
     } 
 
     changePatternLength = () => {
-        // this.preparePianoGridDynamic(1, 0, 0, '4n')
+        // // this.preparePianoGridDynamic(1, 0, 0, '4n')
         // if(this.state.currentSynthSelection == 1){
         //     this.setState({currentSynthSelection: 0});
         // }
@@ -377,7 +377,22 @@ class Sequencer extends Component {
         //     this.setState({currentSynthSelection: 1});
         // }
 
-        console.log(this.state.synthBank[this.state.currentSynthSelection].pattern);
+        // this.setState({steps: 32})
+
+        console.log(this.state.pattern);
+
+        // console.log(this.state.synthBank[this.state.currentSynthSelection].pattern);
+    }
+
+    addPatternLength = () => {
+        // console.log(this.state.pattern);
+
+        for(let i=0; i < this.state.pattern.length; i++){
+            for(let j=this.state.pattern[i].length; j < this.state.steps; j++){
+                this.state.pattern[i].push(0)
+            }
+
+        }
     }
 
     componentDidMount = () => {
@@ -518,31 +533,6 @@ class Sequencer extends Component {
             )
         }
 
-        // let pianoArray1 = [];
-
-        // for(let i=0; i < this.state.noteList[0].length; i++){
-        //     pianoArray1.push(
-        //         <div className="row" key={i} track={i}>
-        //             <PianoRoll position={this.state.currentStep} 
-        //                    updatePattern={this.updatePianoRoll}
-        //                    note={this.state.noteList[1][i]}  
-        //                    steps={this.state.steps} 
-        //                    pattern={this.state.synthBank[1].pattern}
-        //                    row={i} 
-        //                    playing={this.state.playing} />
-        //         </div>
-        //     )
-        // }
-
-        // let test = () => {
-        //     if(selection == 0){
-        //         return pianoArray;
-        //     }
-        //     else{
-        //         return pianoArray1;
-        //     }
-        // }
-
         return(
         <Fragment>
             <div className="row" style={controlBoard}>
@@ -571,7 +561,8 @@ class Sequencer extends Component {
                 {pianoArray}
                 </div>
             </div>
-            <button onClick={this.changePatternLength}>Add to array</button>
+            <button onClick={this.changePatternLength}>Function test #1</button>
+            <button onClick={this.addPatternLength}>Function test #1</button>
         </Fragment>
         )
     }
