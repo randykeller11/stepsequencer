@@ -105,16 +105,16 @@ class Sequencer extends Component {
 
     prepareSynths = () => {
 
-        console.log(this.state.oscillatorSettings[0])
-        console.log(this.state.oscillatorSettings[1])
+        // console.log(this.state.oscillatorSettings[0])
+        // console.log(this.state.oscillatorSettings[1])
 
         this.synth1 = new Tone.PolySynth(14, Tone.Synth, {
             "oscillator" : this.state.oscillatorSettings[0]}).connect(this.chorus).toMaster(),
         this.synth2 = new Tone.PolySynth(14, Tone.Synth, {
             "oscillator" : this.state.oscillatorSettings[1]}).connect(this.chorus).toMaster()
 
-        console.log(this.synth1)
-        console.log(this.synth2)
+        // console.log(this.synth1)
+        // console.log(this.synth2)
     }
 
     prepareEventGrid = () => {
@@ -493,12 +493,13 @@ class Sequencer extends Component {
     
         this.synth1.dispose();
         this.synth2.dispose();
-
         let tempSettings = this.state.oscillatorSettings
         tempSettings[this.state.currentSynthSelection].type = event.target.value;
         console.log(tempSettings);
         this.setState({oscillatorSettings: tempSettings})
         this.prepareSynths();
+
+
     }
 
     
@@ -569,7 +570,10 @@ class Sequencer extends Component {
                 <div style={numberDisplay}>{this.state.position.toString().substring(8,0)}</div>
                 <div style={numberDisplay}>{Math.floor(Tone.Transport.seconds * 100) / 100}</div>
                 {/* <input type="range" min="-60" max="5" defaultValue="0" style={sliderStyle} onChange={this.volumeRange}></input> */}
+                <div>
+                <p> Volume </p>
                 <Knob update={this.volumeKnob} volume={this.state.volume} />
+                </div>
                 <p>BPM: {this.state.bpm} </p>
                 <input type="range" width="25" height="50" min="40" max="200" defaultValue="120" onChange={this.changeBPM} style={sliderStyle}></input>
             </div>
@@ -580,6 +584,8 @@ class Sequencer extends Component {
                 </div>
             </div>
             <div className="row">
+            <button onClick={this.changePatternLength}>Switch</button>
+            <button onClick={this.addPatternLength}>Function test #1</button>
             <div className="col-lg-12">
                 <div className="row" style={controlBoard}>
                         current Synth is {this.state.currentSynthSelection};
@@ -594,8 +600,6 @@ class Sequencer extends Component {
                 {pianoArray}
                 </div>
             </div>
-            <button onClick={this.changePatternLength}>Switch</button>
-            <button onClick={this.addPatternLength}>Function test #1</button>
         </Fragment>
         )
     }
