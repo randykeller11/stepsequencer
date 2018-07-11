@@ -50,7 +50,7 @@ let currentPos = {
 
     render() {        
         let currentStyle;
-        if(this.props.position == 0 && this.state.id == 15 && this.props.playing == true){
+        if(this.props.position == 0 && this.state.id == this.props.steps - 1 && this.props.playing == true){
             currentStyle = currentPos;
         }
         else if(this.props.position - 1 == this.state.id && this.props.playing == true){

@@ -48,7 +48,7 @@ class Track extends Component {
   render() {
 
     let rowArray = [];
-    for (let i = 0; i < this.state.row; i++) {
+    for (let i = 0; i < this.props.rowLength; i++) {
 
         let status;
         if(this.props.pattern[i] == "1"){
