@@ -4,6 +4,7 @@ import Track from './track'
 import PianoRoll from './pianoTrack'
 import Knob from './knob'
 import Slider from 'react-rangeslider'
+import Vertical from './vertical'
 
 let scrollContainer = {
     // overflowY : 'auto',
@@ -13,9 +14,10 @@ let scrollContainer = {
     paddingBottom: '10px',
     paddingTop: '10px',
     borderRadius: '10px 10px 25px 25px',
-    backgroundColor: 'rgb(1, 13, 35)',
+    backgroundColor: '#223559',
     boxShadow: '15px 10px 13px -5px rgba(0,0,0,0.60)',
-    minWidth: '900px'
+    minWidth: '900px',
+    border: '1px solid black'
     
 }
 
@@ -35,20 +37,22 @@ let controlBoard = {
     marginLeft: '150px',
     marginBottom: '10px',
     marginTop: '10px',
-    backgroundColor: '#010D23',
+    backgroundColor: '#223559',
     width: '700px',
     height: '100px',
-    borderRadius: '10px'
+    borderRadius: '10px',
+    border: '1px solid black'
 }
 
 let controlBoardSynth = {
     marginLeft: '100px',
     marginBottom: '10px',
-    backgroundColor: '#010D23',
+    backgroundColor: '#223559',
     width: '800px',
     height: '115px',
     boxShadow: '15px 10px 13px -5px rgba(0,0,0,0.60)',
-    borderRadius: '10px'
+    borderRadius: '10px',
+    border: '1px solid black'
 }
 
 let synthNameContainer = {
@@ -61,8 +65,7 @@ let pianoGridStyle = {
 }
 
 let sliderStyle = {
-    marginLeft: '5px',
-    marginRight: '5px'
+    width: '120px',
 }
 
 let knobStyle = {
@@ -99,7 +102,8 @@ let waveformStyleActive = {
 
 let waveformStyleBox = {
     marginTop: '5px',
-    marginLeft: '10px'
+    marginLeft: '0px',
+    marginRight: '25px'
 }
 
 let imageContainer = {
@@ -270,6 +274,54 @@ let waveformTextDisplay = {
     
 }
 
+let volumeBox = {
+    width: '75px',
+    color: 'white',
+    fontFamily: '"Share Tech", sans-serif',
+    fontSize: '18px',
+    marginLeft: '10px',
+    marginTop: '5px'
+}
+
+let bpmBox = {
+    width: '120px',
+    color: 'white',
+    fontFamily: '"Share Tech", sans-serif',
+    fontSize: '18px',
+    marginTop: '5px',
+    marginLeft: '10px'
+}
+
+let rangeStyle = {
+    width: '50px',
+    transform: 'rotate(270deg)'
+    
+}
+
+let rangeContainer = {
+    width: '50px'
+}
+
+
+let envelopeContainer = {
+    width: '75px',
+    color: 'white',
+    fontFamily: '"Share Tech", sans-serif',
+    fontSize: '18px',
+    marginLeft: '0px',
+    marginTop: '5px'
+}
+
+let envelopeBuffer = {
+    marginLeft: '0px'
+}
+
+let envText = {
+    marginTop: '10px',
+    marginLeft: '10px'
+}
+
+
 let envelopeControl = {}
 
 class Sequencer extends Component {
@@ -285,7 +337,7 @@ class Sequencer extends Component {
             currentPattern: 0,
             currentStep: 0,
             noteDivision: "4n",
-            volume: 0,
+            volume: -5,
             currentView: "drums",
             patternName: this.props.pattern.name,
             tracks: ["Kick", "Snare", "Hihat", "O-HH", "Clap", "Crash", "Tom 1", "Tom 2"],
@@ -296,7 +348,7 @@ class Sequencer extends Component {
             noteList: [["A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4"],
                        ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5"],
                        ["A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6", "E6", "F6", "G6"],
-                       ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5"],
+                       ["A5", "B5", "C6", "D6", "E6", "F6", "G6", "A6", "B6", "C7", "D7", "E7", "F7", "G7"],
         ],
             synthlist: [],
             octaveSettings: [0, 1, 2, 3],
@@ -304,11 +356,13 @@ class Sequencer extends Component {
                                 {type: "square"}, 
                                 {type: "square"}, 
                                 {type: "square"}],
-            envelopeSettings: [{attack: "0.005", decay: "0.1", sustain: "0.3", release : "1"},
+            envelopeSettings: [{attack: "0.55", decay: "0.1", sustain: "0.3", release : "1"},
                                {attack: "0.005", decay: "0.1", sustain: "0.3", release : "1"},
                                {attack: "0.005", decay: "0.1", sustain: "0.3", release : "1"},
                                {attack: "0.005", decay: "0.1", sustain: "0.3", release : "1"},],
-            chordArray: [[],[],[],[]]
+            volumeSettings: [-5, -5, -5, -5],
+            chordArray: [[],[],[],[]],
+            effectsArray: [[],[],[],[]]
         };
 
         this.kick = new Tone.Player({
@@ -347,6 +401,12 @@ class Sequencer extends Component {
         this.synth3;
         this.synth4;
 
+        
+        this.synth1Effects = [];
+        this.synth2Effects = [];
+        this.synth3Effects = [];
+        this.synth4Effects = [];
+
       
 
       }
@@ -380,17 +440,25 @@ class Sequencer extends Component {
         // console.log(this.state.oscillatorSettings[0])
         // console.log(this.state.oscillatorSettings[1])
 
+        console.log(this.state.volumeSettings[0]);
+
+
+        let vol1 = new Tone.Volume(this.state.volumeSettings[0]);
+        let vol2 = new Tone.Volume(this.state.volumeSettings[1]);
+        let vol3 = new Tone.Volume(this.state.volumeSettings[2]);
+        let vol4 = new Tone.Volume(this.state.volumeSettings[3]);
+
         this.synth1 = new Tone.PolySynth(14, Tone.Synth, {
-            "oscillator": this.state.oscillatorSettings[0]}).connect(this.chorus).toMaster(),
+            "oscillator": this.state.oscillatorSettings[0], "envelope": this.state.envelopeSettings[0]},).chain(vol1, Tone.Master),
 
         this.synth2 = new Tone.PolySynth(14, Tone.Synth, {
-            "oscillator" : this.state.oscillatorSettings[1]}).toMaster()
+            "oscillator" : this.state.oscillatorSettings[1], "envelope": this.state.envelopeSettings[1]}).chain(vol1, Tone.Master)
 
         this.synth3 = new Tone.PolySynth(14, Tone.Synth, {
-            "oscillator" : this.state.oscillatorSettings[2]}).toMaster()
+            "oscillator" : this.state.oscillatorSettings[2], "envelope": this.state.envelopeSettings[2] }).chain(vol1, Tone.Master)
 
         this.synth4 = new Tone.PolySynth(14, Tone.Synth, {
-            "oscillator" : this.state.oscillatorSettings[3]}).toMaster()
+            "oscillator" : this.state.oscillatorSettings[3], "envelope": this.state.envelopeSettings[3] }).chain(vol1, Tone.Master)
         
 
         // console.log(this.synth1)
@@ -916,6 +984,7 @@ class Sequencer extends Component {
         this.prepareSynths();
         this.prepareEventGrid();
         this.preparePianoGrid();
+        Tone.Master.volume.value = -5;
     }
 
     updateTrackPattern = (track, pattern) => {
@@ -1056,6 +1125,92 @@ class Sequencer extends Component {
 
     }
 
+    changeAttack = (event) => {
+        // Tone.Master.volume.value= event.currentTarget.value;
+
+        this.synth1.dispose();
+        this.synth2.dispose();
+        this.synth3.dispose();
+        this.synth4.dispose();
+
+        console.log(this.state.envelopeSettings[this.state.currentSynthSelection].attack + " is the old")
+
+        let envArray = this.state.envelopeSettings;
+        envArray[this.state.currentSynthSelection].attack = parseInt(event.currentTarget.value) / 100
+        console.log(envArray);
+        this.setState({envelopeSettings: envArray});
+
+        this.prepareSynths();
+
+        // this.setState({volume: event.currentTarget.value })
+    }
+
+    changeDecay = (event) => {
+        this.synth1.dispose();
+        this.synth2.dispose();
+        this.synth3.dispose();
+        this.synth4.dispose();
+
+        console.log(this.state.envelopeSettings[this.state.currentSynthSelection].decay + " is the old")
+
+        let envArray = this.state.envelopeSettings;
+        envArray[this.state.currentSynthSelection].decay = parseInt(event.currentTarget.value) / 100
+        console.log(envArray);
+        this.setState({envelopeSettings: envArray});
+
+        this.prepareSynths();
+    }
+
+    changeSustain = (event) => {
+        this.synth1.dispose();
+        this.synth2.dispose();
+        this.synth3.dispose();
+        this.synth4.dispose();
+
+        console.log(this.state.envelopeSettings[this.state.currentSynthSelection].sustain + " is the old")
+
+        let envArray = this.state.envelopeSettings;
+        envArray[this.state.currentSynthSelection].sustain = parseInt(event.currentTarget.value) / 100
+        console.log(envArray);
+        this.setState({envelopeSettings: envArray});
+
+        this.prepareSynths();
+    }
+
+    changeRelease = (event) => {
+        this.synth1.dispose();
+        this.synth2.dispose();
+        this.synth3.dispose();
+        this.synth4.dispose();
+
+        console.log(this.state.envelopeSettings[this.state.currentSynthSelection].release + " is the old")
+
+        let envArray = this.state.envelopeSettings;
+        envArray[this.state.currentSynthSelection].release = parseInt(event.currentTarget.value) / 100
+        console.log(envArray);
+        this.setState({envelopeSettings: envArray});
+
+        this.prepareSynths();
+    }
+
+    changeSynthVolume = (event) => {
+        this.synth1.dispose();
+        this.synth2.dispose();
+        this.synth3.dispose();
+        this.synth4.dispose();
+
+        let volSet = this.state.volumeSettings;
+
+        console.log(volSet);
+
+        volSet[this.state.currentSynthSelection] = event.currentTarget.value;
+
+        this.setState({volumeSettings: volSet});
+        this.prepareSynths();
+
+    }
+
+
     
 
     render(){
@@ -1162,13 +1317,21 @@ class Sequencer extends Component {
                 {/* <button onClick={() => this.stopLoop()}> Stop </button> */}
 
                 {/* <div style={numberDisplay}>{Math.floor(Tone.Transport.seconds * 100) / 100}</div> */}
-                <div>
-                <p> Volume </p>
-                <Knob update={this.volumeKnob} volume={this.state.volume} />
+                <div style={volumeBox}>
+                    <p width={'50px'}>Volume</p>
+                        <div style={rangeContainer}>
+                            <input style={rangeStyle}type="range" min="-60" max="5" defaultValue="0" onChange={this.volumeRange}></input>
+                    </div>
                 </div>
+                <div style={bpmBox}>
                 <p>BPM: {this.state.bpm} </p>
-                <input type="range" width="25" height="50" min="40" max="200" defaultValue="120" onChange={this.changeBPM} style={sliderStyle}></input>
+                <input type="range" min="70" max="200" defaultValue="120" onChange={this.changeBPM} style={sliderStyle}></input>
+                </div>
+
+                <div style={volumeBox}>
                 <button onClick={this.changeView}>Synth View</button>
+                </div>
+
                 
             </div>
 
@@ -1207,10 +1370,59 @@ class Sequencer extends Component {
                         <div className="row">
                             <div style={waveformTextDisplay}>{this.state.oscillatorSettings[this.state.currentSynthSelection].type}</div>
                         </div>
+                        </div>
 
-
-
+                    <div style={envelopeBuffer}>
+                        <div style={envelopeContainer}>
+                            <p width={'30px'}>Attack</p>
+                        <div style={rangeContainer}>
+                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].attack} onChange={this.changeAttack}></input>
+                            <p style={envText}>{this.state.envelopeSettings[this.state.currentSynthSelection].attack}</p>
+                        </div>
                     </div>
+                    </div>
+                
+                    <div style={envelopeBuffer}>
+                        <div style={envelopeContainer}>
+                            <p width={'30px'}>Decay</p>
+                        <div style={rangeContainer}>
+                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].decay} onChange={this.changeDecay}></input>
+                            <p style={envText}>{this.state.envelopeSettings[this.state.currentSynthSelection].decay}</p>
+                        </div>
+                    </div>
+                    </div>
+                    
+                    <div style={envelopeBuffer}>
+                        <div style={envelopeContainer}>
+                            <p width={'30px'}>Sustain</p>
+                        <div style={rangeContainer}>
+                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].sustain} onChange={this.changeSustain}></input>
+                            <p style={envText}>{this.state.envelopeSettings[this.state.currentSynthSelection].sustain}</p>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div style={envelopeBuffer}>
+                        <div style={envelopeContainer}>
+                            <p width={'30px'}>Release</p>
+                        <div style={rangeContainer}>
+                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].release} onChange={this.changeRelease}></input>
+                            <p style={envText}>{this.state.envelopeSettings[this.state.currentSynthSelection].release}</p>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div style={envelopeBuffer}>
+                        <div style={envelopeContainer}>
+                            <p width={'30px'}>Volume</p>
+                        <div style={rangeContainer}>
+                            <input style={rangeStyle} type="range" min="-60" max="5" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].release} onChange={this.changeSynthVolume}></input>
+                            <p style={envText}>{this.state.volumeSettings[this.state.currentSynthSelection]}</p>
+                        </div>
+                    </div>
+                    </div>   
+                
+                
                 </div>
                 {/* <div className ="row" style={effectsContainer}>
                         EFFECTS THINGS

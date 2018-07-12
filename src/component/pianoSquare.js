@@ -40,7 +40,6 @@ let currentPos = {
     // transform: 'translateY(5px)',
     // transition: '100ms ease-in-out',
     boxShadow: '0 6px #666',
-    cursor: 'pointer'
   }
 
   class PianoSquare extends Component {
