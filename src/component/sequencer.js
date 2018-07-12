@@ -1464,7 +1464,7 @@ class Sequencer extends Component {
                         <div style={envelopeContainer}>
                             <p width={'30px'}>Volume</p>
                         <div style={rangeContainer}>
-                            <input style={rangeStyle} type="range" min="-40" max="10" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].release} onChange={this.changeSynthVolume}></input>
+                            <input style={rangeStyle} type="range" min="-60" max="5" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].release} onChange={this.changeSynthVolume}></input>
                             <p style={envText}>{this.state.volumeSettings[this.state.currentSynthSelection]}</p>
                         </div>
                     </div>
