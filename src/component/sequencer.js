@@ -3,6 +3,7 @@ import Tone from 'tone';
 import Track from './track'
 import PianoRoll from './pianoTrack'
 import Knob from './knob'
+import Slider from 'react-rangeslider'
 
 let scrollContainer = {
     // overflowY : 'auto',
@@ -18,11 +19,15 @@ let scrollContainer = {
 }
 
 let numberDisplay = {
+    float: 'left',
     width: '75px',
     color: 'white',
     fontFamily: '"Share Tech", sans-serif',
     fontSize: '22px',
-    margin: '15px'
+    marginLeft: '15px',
+    marginTop: '5px',
+    border: '3px solid white',
+    borderRadius: '3px'
 }
 
 let controlBoard = {
@@ -42,6 +47,7 @@ let controlBoardSynth = {
     width: '800px',
     height: '115px',
     boxShadow: '15px 10px 13px -5px rgba(0,0,0,0.60)',
+    borderRadius: '10px'
 }
 
 let synthNameContainer = {
@@ -71,20 +77,22 @@ let waveformStyle = {
     marginLeft: '3px',
     border: '1px solid black',
     borderRadius: '5px',
-    boxShadow: '0 9px #999'
+    boxShadow: '0 6px #999',
+    cursor: 'pointer'
 }
 
 let waveformStyleActive = {
     width: '50px',
-    height: '45px',
-    backgroundColor: 'yellow',
+    height: '50px',
+    backgroundColor: 'orange',
     marginTop: '2px',
     marginLeft: '3px',
     border: '1px solid black',
-    transform: 'translateY(5px)',
+    transform: 'translateY(3px)',
     transition: '150ms ease-in-out',
     borderRadius: '5px',
-    boxShadow: '0 9px #666'
+    boxShadow: '0 3px #666',
+    cursor: 'pointer'
 }
 
 
@@ -134,10 +142,11 @@ let synthSelectionButton = {
     marginTop: '10px',
     marginLeft: '3px',
     borderRadius: '5px',
-    boxShadow: '0 6px #999',
     color: 'white',
     textShadow: '2px 2px #41464B',
     border: '1px solid black',
+    boxShadow: '0 6px #999',
+    cursor: 'pointer'
 }
 
 let synthSelectionButtonActive = {
@@ -145,12 +154,14 @@ let synthSelectionButtonActive = {
     height: '30px',
     marginTop: '10px',
     marginLeft: '3px',
-    transform: 'translateY(4px)',
+    transform: 'translateY(3px)',
     transition: '150ms ease-in-out',
+    textShadow: '2px 2px #41464B',
     borderRadius: '5px',
     border: '1px solid black',
-    boxShadow: '0 6px #666',
+    boxShadow: '0 3px #666',
     color: 'white',
+    cursor: 'pointer'
 
 }
 
@@ -161,7 +172,7 @@ let synthControlContainer = {
     fontFamily: '"Share Tech", sans-serif',
     fontSize: '20px',
     borderRadius: '5px',
-    backgroundColor: '#525354',
+    // backgroundColor: '#525354',
     width: '22%',
     height: '100px'
 }
@@ -181,14 +192,81 @@ let appPosition32 = {
 }
 
 let startButton = {
+    float: 'left',
     width: '50px',
     height: '50px',
-    backgroundColor: 'white'
+    backgroundColor: 'green',
+    borderRadius: '5px',
+    boxShadow: '0 6px #027C00',
+    border: '1px solid black',
+    cursor: 'pointer'
+}
+
+let startButtonPressed = {
+    float: 'left',
+    width: '50px',
+    height: '50px',
+    backgroundColor: 'green',
+    borderRadius: '5px',
+    transform: 'translateY(3px)',
+    transition: '150ms ease-in-out',
+    boxShadow: '0 3px #0D580C',
+    border: '1px solid black',
+    cursor: 'pointer'
+}
+
+let stopButton = {
+    float: 'left',
+    marginLeft: '5px',
+    width: '50px',
+    height: '50px',
+    backgroundColor: 'red',
+    borderRadius: '5px',
+    boxShadow: '0 6px #AD1E1E',
+    border: '1px solid black',
+    cursor: 'pointer'
+}
+
+let stopButtonPressed = {
+    float: 'left',
+    marginLeft: '5px',
+    width: '50px',
+    height: '50px',
+    backgroundColor: 'red',
+    borderRadius: '5px',
+    transform: 'translateY(3px)',
+    transition: '150ms ease-in-out',
+    boxShadow: '0 3px #C9253B',
+    border: '1px solid black',
+    cursor: 'pointer'
 }
 
 let imageContainerStart = {
     height: '50px',
-    width: '50px'
+    width: '50px',
+
+}
+
+let playContainer = {
+    width: '200px',
+    marginTop: '20px',
+    marginLeft: '5px',
+    // backgroundColor: 'grey',
+    // height: '75px'
+}
+
+let waveformTextDisplay = {
+    border: '3px solid white',
+    color: 'white',
+    marginLeft: '80px',
+    marginTop: '10px',
+    width: '100px',
+    height: '40px',
+    fontFamily: '"Share Tech", sans-serif',
+    fontSize: '22px',
+    color: 'white',
+    borderRadius: '3px'
+    
 }
 
 let envelopeControl = {}
@@ -789,11 +867,14 @@ class Sequencer extends Component {
             {/* className={this.state.steps == 16 ? "col-md-7 offset-3" : "none"} */}
             <div style={appPosition}>
             <div className="row" style={controlBoard}>
-                <div style={startButton} onClick={() => this.startLoop()}><img src="../../sine.png" style={imageContainerStart}></img></div>
-                <div style={startButton} onClick={() => this.stopLoop()}><img src="../../sine.png" style={imageContainerStart}></img></div>
+            <div style={playContainer}>
+                <div style={this.state.playing ? startButtonPressed : startButton} onClick={() => this.startLoop()}><img src="../../play.png" style={imageContainerStart}></img></div>
+                <div style={!this.state.playing ? stopButtonPressed : stopButton} onClick={() => this.stopLoop()}><img src="../../stop.png" style={imageContainerStart}></img></div>
+                <div style={numberDisplay}>{this.state.position.toString().substring(8,0)}</div>
+            </div>
                 {/* <button onClick={() => this.startLoop()}> Start </button> */}
                 {/* <button onClick={() => this.stopLoop()}> Stop </button> */}
-                <div style={numberDisplay}>{this.state.position.toString().substring(8,0)}</div>
+
                 {/* <div style={numberDisplay}>{Math.floor(Tone.Transport.seconds * 100) / 100}</div> */}
                 <div>
                 <p> Volume </p>
@@ -801,7 +882,7 @@ class Sequencer extends Component {
                 </div>
                 <p>BPM: {this.state.bpm} </p>
                 <input type="range" width="25" height="50" min="40" max="200" defaultValue="120" onChange={this.changeBPM} style={sliderStyle}></input>
-                <button onClick={this.changeView}>Function test #1</button>
+                <button onClick={this.changeView}>Synth View</button>
                 
             </div>
 
@@ -826,7 +907,8 @@ class Sequencer extends Component {
                         <div><button style={this.state.currentSynthSelection == 3 ? synthSelectionButtonActive : synthSelectionButton} value="3" onClick={this.changeSynthSelection}>Synth 4</button></div>
                         </div>
                     </div>
-                    <div className="row" style={waveformStyleBox}>
+                    <div>
+                        <div className="row" style={waveformStyleBox}>
                         <div onClick={() => this.handleSynthOscSettings("square")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "square" ? waveformStyleActive : waveformStyle} 
                              value="square"><img src="../../square.png" style={imageContainer}></img></div>
                         <div onClick={() => this.handleSynthOscSettings("triangle")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "triangle" ? waveformStyleActive : waveformStyle} 
@@ -835,12 +917,13 @@ class Sequencer extends Component {
                              value="sine"><img src="../../sine.png" style={imageContainer}></img></div>
                         <div onClick={() => this.handleSynthOscSettings("sawtooth")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sawtooth" ? waveformStyleActive : waveformStyle} 
                              value="sawtooth"><img src="../../saw.png" style={imageContainer}></img></div>
-                        <div style={envelopeControl}> Attack </div>
-                        <div> Decay </div>
-                        <div> Sustain </div>
-                        <div> Release </div>
-                        <div> Volume </div>
-                        <div> Octave </div>
+                        </div>
+                        <div className="row">
+                            <div style={waveformTextDisplay}>{this.state.oscillatorSettings[this.state.currentSynthSelection].type}</div>
+                        </div>
+
+
+
                     </div>
                 </div>
                 {/* <div className ="row" style={effectsContainer}>

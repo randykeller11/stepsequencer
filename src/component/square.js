@@ -12,19 +12,21 @@ let squareStyle = {
     borderRadius: '5px',
     boxShadow: '0 6px #4279A5',
     transition: '100ms ease-in-out',
+    cursor: 'pointer'
   }
 
 let squareStyleActive = {
     width: '50px',
-    height: '46px',
+    height: '50px',
     marginLeft: '3px',
     marginTop: '3px',
     backgroundColor: 'orange',
     border: 'black 1px solid',
     borderRadius: '5px',
-    transform: 'translateY(4px)',
+    transform: 'translateY(3px)',
     transition: '100ms ease-in-out',
-    boxShadow: '0 6px #7E4D11'
+    boxShadow: '0 3px #7E4D11',
+    cursor: 'pointer'
   }
 
 let currentPos = {
@@ -37,7 +39,8 @@ let currentPos = {
     borderRadius: '5px',
     // transform: 'translateY(5px)',
     // transition: '100ms ease-in-out',
-    boxShadow: '0 6px #666'
+    boxShadow: '0 6px #666',
+    cursor: 'pointer'
   }
 
   class Square extends Component {
