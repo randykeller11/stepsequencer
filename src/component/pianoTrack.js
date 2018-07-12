@@ -18,7 +18,10 @@ let trackNameContainer = {
 
 let trackName = {
     color: 'white',
-    paddingTop: '20px'
+    paddingTop: '5px',
+    marginLeft: '5px',
+    fontFamily: '"Share Tech", sans-serif',
+    fontSize: '22px'
 }
 
 class PianoRoll extends Component {

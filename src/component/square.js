@@ -16,13 +16,13 @@ let squareStyle = {
 
 let squareStyleActive = {
     width: '50px',
-    height: '45px',
+    height: '46px',
     marginLeft: '3px',
     marginTop: '3px',
     backgroundColor: 'orange',
     border: 'black 1px solid',
     borderRadius: '5px',
-    transform: 'translateY(5px)',
+    transform: 'translateY(4px)',
     transition: '100ms ease-in-out',
     boxShadow: '0 6px #7E4D11'
   }
@@ -37,7 +37,7 @@ let currentPos = {
     borderRadius: '5px',
     // transform: 'translateY(5px)',
     // transition: '100ms ease-in-out',
-    boxShadow: '0 5px #666'
+    boxShadow: '0 6px #666'
   }
 
   class Square extends Component {

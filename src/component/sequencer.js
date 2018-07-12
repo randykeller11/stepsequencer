@@ -11,7 +11,8 @@ let scrollContainer = {
     paddingRight: '50px',
     paddingBottom: '10px',
     borderRadius: '10px 10px 25px 25px',
-    backgroundColor: 'rgb(1, 13, 35)'
+    backgroundColor: 'rgb(1, 13, 35)',
+    boxShadow: '15px 10px 13px -5px rgba(0,0,0,0.60)',
     
 }
 
@@ -115,7 +116,7 @@ class Sequencer extends Component {
             volume: 0,
             currentView: "drum",
             patternName: this.props.pattern.name,
-            tracks: ["Kick", "Snare", "Hihat", "Open Hihat", "Clap", "Crash", "Tom 1", "Tom 2"],
+            tracks: ["Kick", "Snare", "Hihat", "O-HH", "Clap", "Crash", "Tom 1", "Tom 2"],
             pattern: this.props.pattern.events,
             synthBank: this.props.pattern.synthEvents,
             currentSynthSelection: 0,
@@ -683,7 +684,6 @@ class Sequencer extends Component {
                 <button onClick={() => this.stopLoop()}> Stop </button>
                 <div style={numberDisplay}>{this.state.position.toString().substring(8,0)}</div>
                 <div style={numberDisplay}>{Math.floor(Tone.Transport.seconds * 100) / 100}</div>
-                {/* <input type="range" min="-60" max="5" defaultValue="0" style={sliderStyle} onChange={this.volumeRange}></input> */}
                 <div>
                 <p> Volume </p>
                 <Knob update={this.volumeKnob} volume={this.state.volume} />
@@ -697,6 +697,8 @@ class Sequencer extends Component {
                 {trackArray}
                 </div>
             </div>
+
+
             <div className="row">
             <div className="row" style={synthSelectionContainer}>
                 <button value="0" onClick={this.changeSynthSelection}>Synth #1</button>
@@ -724,12 +726,10 @@ class Sequencer extends Component {
                 <div className ="row" style={effectsContainer}>
                         EFFECTS THINGS
                 </div>
-
-
             </div>
             </div>
             <div className="row">
-                <div className="col-lg-12" style={pianoGridStyle}>
+                <div style={scrollContainer}>
                 {pianoArray}
                 </div>
             </div>

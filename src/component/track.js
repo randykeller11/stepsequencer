@@ -19,6 +19,8 @@ let trackNameContainer = {
 
 let trackName = {
     color: 'white',
+    paddingTop: '17px',
+    fontFamily: '"Share Tech", sans-serif'
 }
 
 

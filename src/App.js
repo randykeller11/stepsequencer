@@ -102,7 +102,9 @@ class App extends Component {
         {/* <h1>This is {store.getState().songname} </h1>
         <h1> File controls go here </h1> */}
         {/* <Piano /> */}
+        <div className="col-lg-7 offset-md-3">
         <Sequencer pattern={store.getState().pattern1} />
+        </div>
       </Fragment>
     );
   }
