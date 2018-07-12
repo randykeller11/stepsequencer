@@ -24,8 +24,20 @@ let controlBoard = {
     marginLeft: '150px',
     marginBottom: '10px',
     backgroundColor: 'gray',
-    width: '600px',
+    width: '700px',
     height: '100px'
+}
+
+let controlBoardSynth = {
+    marginLeft: '150px',
+    marginBottom: '10px',
+    backgroundColor: 'gray',
+    width: '700px',
+    height: '120px'
+}
+
+let synthNameContainer = {
+
 }
 
 let pianoGridStyle = {
@@ -55,12 +67,12 @@ let waveformStyle = {
 
 let waveformStyleActive = {
     width: '50px',
-    height: '47px',
+    height: '45px',
     backgroundColor: 'yellow',
     marginTop: '2px',
     marginLeft: '3px',
-    transform: 'translateY(3px)',
-    transition: '250ms ease-in-out',
+    transform: 'translateY(5px)',
+    transition: '150ms ease-in-out',
     borderRadius: '5px',
     boxShadow: '0 9px #666'
 }
@@ -98,7 +110,13 @@ let trackNameDisplay = {
 
 }
 
-
+let nameStyle ={
+    margin: 'auto',
+    width: '225px',
+    fontFamily: '"Share Tech", sans-serif',
+    fontSize: '20px',
+    color: 'white'
+}
 
 class Sequencer extends Component {
     
@@ -114,7 +132,7 @@ class Sequencer extends Component {
             currentStep: 0,
             noteDivision: "4n",
             volume: 0,
-            currentView: "drum",
+            currentView: "drums",
             patternName: this.props.pattern.name,
             tracks: ["Kick", "Snare", "Hihat", "O-HH", "Clap", "Crash", "Tom 1", "Tom 2"],
             pattern: this.props.pattern.events,
@@ -585,6 +603,17 @@ class Sequencer extends Component {
 
     }
 
+    changeView = () => {
+        if(this.state.currentView == "drums"){
+            this.setState({currentView: "synth"})
+        }
+        else{
+            this.setState({currentView: "drums"})
+        }
+
+
+    }
+
     
 
     render(){
@@ -679,6 +708,7 @@ class Sequencer extends Component {
 
         return(
         <Fragment>
+            <div className={this.state.steps == 16 ? "col-md-7 offset-3" : "none"}>
             <div className="row" style={controlBoard}>
                 <button onClick={() => this.startLoop()}> Start </button>
                 <button onClick={() => this.stopLoop()}> Stop </button>
@@ -690,31 +720,43 @@ class Sequencer extends Component {
                 </div>
                 <p>BPM: {this.state.bpm} </p>
                 <input type="range" width="25" height="50" min="40" max="200" defaultValue="120" onChange={this.changeBPM} style={sliderStyle}></input>
+                <button onClick={this.changeView}>Function test #1</button>
+                
             </div>
 
-            <div className="row">
+            {this.state.currentView !== "drums" ? <span></span> : <div className="row">
             <div style={scrollContainer}>
                 {trackArray}
                 </div>
-            </div>
+            </div>  }
 
 
-            <div className="row">
-            <div className="row" style={synthSelectionContainer}>
-                <button value="0" onClick={this.changeSynthSelection}>Synth #1</button>
-                <button value="1" onClick={this.changeSynthSelection}>Synth #2</button>
-                <button value="2" onClick={this.changeSynthSelection}>Synth #3</button>
-                <button value="3" onClick={this.changeSynthSelection}>Synth #4</button>
+            {this.state.currentView !== "synth" ? <span></span>: <div className="row">
+            {/* <div className="row" style={synthSelectionContainer}>
+                
+
+                
+                
                 <button onClick={this.changePatternLength}>Switch</button>
-                <button onClick={this.preparePianoGridDynamic}>Function test #1</button>
-            </div>
-            <div className="col-lg-12">
-                <div className="row" style={controlBoard}>
+            </div> */}
+            <div>
+                <div className="row" style={controlBoardSynth}>
+                    <div>
+                        <div><button value="0" onClick={this.changeSynthSelection}>Synth #1</button></div>
+                        <div><button value="1" onClick={this.changeSynthSelection}>Synth #2</button></div>
+                        <div><button value="2" onClick={this.changeSynthSelection}>Synth #3</button></div>
+                        <div><button value="3" onClick={this.changeSynthSelection}>Synth #4</button></div>
+
+                    </div>
                     <div className="row" style={waveformStyleBox}>
-                        <div onClick={() => this.handleSynthOscSettings("square")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "square" ? waveformStyleActive : waveformStyle} value="square"><img src="../../square.png" style={imageContainer}></img></div>
-                        <div onClick={() => this.handleSynthOscSettings("triangle")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "triangle" ? waveformStyleActive : waveformStyle} value="triangle"><img src="../../triangle.png" style={imageContainer}></img></div>
-                        <div onClick={() => this.handleSynthOscSettings("sine")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sine" ? waveformStyleActive : waveformStyle} value="sine"><img src="../../sine.png" style={imageContainer}></img></div>
-                        <div onClick={() => this.handleSynthOscSettings("sawtooth")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sawtooth" ? waveformStyleActive : waveformStyle} value="sawtooth"><img src="../../saw.png" style={imageContainer}></img></div>
+                        <div onClick={() => this.handleSynthOscSettings("square")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "square" ? waveformStyleActive : waveformStyle} 
+                             value="square"><img src="../../square.png" style={imageContainer}></img><div>Square</div></div>
+                        <div onClick={() => this.handleSynthOscSettings("triangle")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "triangle" ? waveformStyleActive : waveformStyle} 
+                             value="triangle"><img src="../../triangle.png" style={imageContainer}></img></div>
+                        <div onClick={() => this.handleSynthOscSettings("sine")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sine" ? waveformStyleActive : waveformStyle} 
+                             value="sine"><img src="../../sine.png" style={imageContainer}></img></div>
+                        <div onClick={() => this.handleSynthOscSettings("sawtooth")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sawtooth" ? waveformStyleActive : waveformStyle} 
+                             value="sawtooth"><img src="../../saw.png" style={imageContainer}></img></div>
                         <div> Attack </div>
                         <div> Decay </div>
                         <div> Sustain </div>
@@ -723,15 +765,17 @@ class Sequencer extends Component {
                         <div> Octave </div>
                     </div>
                 </div>
-                <div className ="row" style={effectsContainer}>
+                {/* <div className ="row" style={effectsContainer}>
                         EFFECTS THINGS
-                </div>
+                </div> */}
             </div>
-            </div>
-            <div className="row">
+            </div> }
+
+        {this.state.currentView !== "synth" ? <span></span> : <div className="row">
                 <div style={scrollContainer}>
                 {pianoArray}
                 </div>
+            </div> }
             </div>
         </Fragment>
         )
