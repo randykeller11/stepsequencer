@@ -40,6 +40,7 @@ let controlBoard = {
     backgroundColor: '#223559',
     width: '700px',
     height: '100px',
+    boxShadow: '15px 10px 13px -5px rgba(0,0,0,0.60)',
     borderRadius: '10px',
     border: '1px solid black'
 }
