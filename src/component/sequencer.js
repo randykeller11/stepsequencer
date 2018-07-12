@@ -345,7 +345,7 @@ class Sequencer extends Component {
             volume: -5,
             currentView: "drums",
             patternName: this.props.pattern.name,
-            tracks: ["Kick", "Snare", "Hihat", "Dbl HH", "Clap", "Tom 1", "Tom 2", "FX"],
+            tracks: ["Kick", "Snare", "Hihat", "Dbl HH", "Clap", "Tom 1", "Tom 2", "Dbl Snr"],
             pattern: this.props.pattern.events,
             synthBank: this.props.pattern.synthEvents,
             currentSynthSelection: 0,
@@ -562,9 +562,11 @@ class Sequencer extends Component {
 
         this.fx1Loop = new Tone.Sequence((time, note) => {
             if(note == 1){
-                this.fx1.start();
+                this.snare.start();
+                setTimeout(() => { this.snare.start()}, 100);
             }
         }, this.state.pattern[7], this.state.noteDivision).start(0);
+        
 
     }
 
