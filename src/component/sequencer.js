@@ -321,6 +321,10 @@ let envText = {
     marginLeft: '10px'
 }
 
+let viewChange = {
+    marginTop: '15px'
+}
+
 
 let envelopeControl = {}
 
@@ -1377,7 +1381,7 @@ class Sequencer extends Component {
                 </div>
 
                 <div style={volumeBox}>
-                <button onClick={this.changeView}>Synth View</button>
+                <button style={viewChange}onClick={this.changeView}>Synth View</button>
                 </div>
 
                 
