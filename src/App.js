@@ -99,8 +99,8 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <h1>This is {store.getState().songname} </h1>
-        <h1> File controls go here </h1>
+        {/* <h1>This is {store.getState().songname} </h1>
+        <h1> File controls go here </h1> */}
         {/* <Piano /> */}
         <Sequencer pattern={store.getState().pattern1} />
       </Fragment>

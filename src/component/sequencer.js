@@ -6,7 +6,13 @@ import Knob from './knob'
 
 let scrollContainer = {
     // overflowY : 'auto',
-    marginLeft: '10px'
+    marginLeft: '10px',
+    paddingLeft: '35px',
+    paddingRight: '50px',
+    paddingBottom: '10px',
+    borderRadius: '10px 10px 25px 25px',
+    backgroundColor: 'rgb(1, 13, 35)'
+    
 }
 
 let numberDisplay = {
@@ -14,7 +20,7 @@ let numberDisplay = {
 }
 
 let controlBoard = {
-    marginLeft: '200px',
+    marginLeft: '150px',
     marginBottom: '10px',
     backgroundColor: 'gray',
     width: '600px',
@@ -37,8 +43,8 @@ let knobStyle = {
 }
 
 let waveformStyle = {
-    width: '75px',
-    height: '75px',
+    width: '50px',
+    height: '50px',
     backgroundColor: 'green',
     marginTop: '2px',
     marginLeft: '3px',
@@ -47,12 +53,12 @@ let waveformStyle = {
 }
 
 let waveformStyleActive = {
-    width: '75px',
-    height: '70px',
+    width: '50px',
+    height: '47px',
     backgroundColor: 'yellow',
     marginTop: '2px',
     marginLeft: '3px',
-    transform: 'translateY(5px)',
+    transform: 'translateY(3px)',
     transition: '250ms ease-in-out',
     borderRadius: '5px',
     boxShadow: '0 9px #666'
@@ -65,9 +71,32 @@ let waveformStyleBox = {
 }
 
 let imageContainer = {
-    width: '75px',
+    width: '50px',
+    height: '50px'
+}
+
+let effectsContainer = {
+    marginLeft: '150px',
+    marginTop: '5px',
+    marginBottom: '5px',
+    backgroundColor: 'gray',
+    width: '600px',
     height: '75px'
 }
+
+let synthSelectionContainer = {
+    marginLeft: '150px',
+    marginTop: '5px',
+    marginBottom: '5px',
+    backgroundColor: 'gray',
+    width: '600px',
+    height: '75px'
+}
+
+let trackNameDisplay = {
+
+}
+
 
 
 class Sequencer extends Component {
@@ -84,8 +113,9 @@ class Sequencer extends Component {
             currentStep: 0,
             noteDivision: "4n",
             volume: 0,
+            currentView: "drum",
             patternName: this.props.pattern.name,
-            tracks: ["Kick", "Snare", "Hihat", "O Hihat", "Clap", "Tom 1", "Tom 2", "Tom 3"],
+            tracks: ["Kick", "Snare", "Hihat", "Open Hihat", "Clap", "Crash", "Tom 1", "Tom 2"],
             pattern: this.props.pattern.events,
             synthBank: this.props.pattern.synthEvents,
             currentSynthSelection: 0,
@@ -663,22 +693,18 @@ class Sequencer extends Component {
             </div>
 
             <div className="row">
-            <div className="trackContainer" style={scrollContainer}>
+            <div style={scrollContainer}>
                 {trackArray}
                 </div>
             </div>
             <div className="row">
-            <div className="col-lg-12">
+            <div className="row" style={synthSelectionContainer}>
                 <button value="0" onClick={this.changeSynthSelection}>Synth #1</button>
                 <button value="1" onClick={this.changeSynthSelection}>Synth #2</button>
                 <button value="2" onClick={this.changeSynthSelection}>Synth #3</button>
                 <button value="3" onClick={this.changeSynthSelection}>Synth #4</button>
-            </div>
-            <div className="col-lg-12">
-                <div className="row">
-                    <button onClick={this.changePatternLength}>Switch</button>
-                    <button onClick={this.preparePianoGridDynamic}>Function test #1</button>
-                </div>
+                <button onClick={this.changePatternLength}>Switch</button>
+                <button onClick={this.preparePianoGridDynamic}>Function test #1</button>
             </div>
             <div className="col-lg-12">
                 <div className="row" style={controlBoard}>
@@ -687,9 +713,19 @@ class Sequencer extends Component {
                         <div onClick={() => this.handleSynthOscSettings("triangle")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "triangle" ? waveformStyleActive : waveformStyle} value="triangle"><img src="../../triangle.png" style={imageContainer}></img></div>
                         <div onClick={() => this.handleSynthOscSettings("sine")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sine" ? waveformStyleActive : waveformStyle} value="sine"><img src="../../sine.png" style={imageContainer}></img></div>
                         <div onClick={() => this.handleSynthOscSettings("sawtooth")} style={this.state.oscillatorSettings[this.state.currentSynthSelection].type == "sawtooth" ? waveformStyleActive : waveformStyle} value="sawtooth"><img src="../../saw.png" style={imageContainer}></img></div>
-                    {/* </div> */}
+                        <div> Attack </div>
+                        <div> Decay </div>
+                        <div> Sustain </div>
+                        <div> Release </div>
+                        <div> Volume </div>
+                        <div> Octave </div>
                     </div>
                 </div>
+                <div className ="row" style={effectsContainer}>
+                        EFFECTS THINGS
+                </div>
+
+
             </div>
             </div>
             <div className="row">

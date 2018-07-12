@@ -5,7 +5,8 @@ import Square from './square'
 
 let trackContainer = {
   float: 'left',
-  height: '50px'
+  height: '60px',
+  marginTop: '1px'
 }
 
 let scrollContainer = {
@@ -16,9 +17,10 @@ let trackNameContainer = {
     margin: '0px',
 }
 
-let rowHeight = {
-    height: '52px'
+let trackName = {
+    color: 'white',
 }
+
 
 class Track extends Component {
 
@@ -68,7 +70,7 @@ class Track extends Component {
 
     return(
         <Fragment>
-        <div style={trackNameContainer}> <div>{this.state.trackName}</div>
+        <div style={trackNameContainer}> <div style={trackName}>{this.state.trackName}</div>
         </div>
         {rowArray}
         </Fragment>

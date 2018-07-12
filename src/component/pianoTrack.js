@@ -4,19 +4,21 @@ import Tone from 'tone';
 import Square from './pianoSquare'
 
 
-const gridStyle = {
-    height: '50px',
-    width: '50px'
-}
-
 let trackContainer = {
     float: 'left',
-    height: '50px'
+    height: '60px',
+    marginTop: '1px'
   }
 
 let trackNameContainer = {
     width: '50px',
-    margin: '0px',
+    height: '50px',
+    marginTop: '10px',
+}
+
+let trackName = {
+    color: 'white',
+    paddingTop: '20px'
 }
 
 class PianoRoll extends Component {
@@ -70,7 +72,7 @@ class PianoRoll extends Component {
     
     return(
       <Fragment>
-          <div style={trackNameContainer}> <div>{this.state.note}</div>
+          <div style={trackNameContainer}> <div style={trackName}>{this.state.note}</div>
         </div>
           {rowArray}
       </Fragment>
