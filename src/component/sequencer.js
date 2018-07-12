@@ -299,6 +299,7 @@ class Sequencer extends Component {
                        ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5"],
         ],
             synthlist: [],
+            octaveSettings: [0, 1, 2, 3],
             oscillatorSettings: [{type: "square"}, 
                                 {type: "square"}, 
                                 {type: "square"}, 
@@ -349,6 +350,29 @@ class Sequencer extends Component {
       
 
       }
+
+    getCurrentNotes = () => {
+
+        console.log(this.state.synthBank[0].pattern[5]);
+        console.log(this.state.noteList[this.state.octaveSettings[0]][5]);
+
+        let chordArray1 = [];
+        let chordArray2 = [];
+        let chordArray3 = [];
+        let chordArray4 = [];
+        
+        // for(let i=0; this.state.synthBank[0].length; i++){
+        //     if(this.state.synthBank[0].pattern[i] == 1){
+                
+
+        //     }
+           
+        // }
+
+        // console.log(finalArray);
+
+
+    }
 
 
     prepareSynths = () => {
@@ -424,6 +448,38 @@ class Sequencer extends Component {
                 this.clap.start();
             }
         }, this.state.pattern[3], this.state.noteDivision).start(0);
+
+    }
+
+    prepareSingleGrid = (synth, pattern) => {
+
+        console.log(this.state.synthBank[0].pattern)
+
+        let array1 = [];
+
+        for(let i=0; i < this.state.synthBank[0].pattern[0].length; i++){
+            let entry = [];
+            for(let j=0; j < this.state.synthBank[0].pattern.length; j++){
+                
+                if(this.state.synthBank[0].pattern[j][i] == 1){
+                    entry.push(this.state.noteList[this.state.octaveSettings[0]][j]);
+                };
+        
+            }
+
+            array1.push(entry);
+
+        }
+        console.log(array1);
+        console.log("/////////////////////////////////////////")
+
+        // this.synthLoop = new Tone.Sequence((time, note) => {
+
+        //     // if(note == 1){
+        //     //     this.synth1.triggerAttackRelease([this.state.noteList[0][0]], '4n');
+        //     // }
+            
+        // }, this.state.synthBank[0].pattern[0], this.state.noteDivision).start(0);
 
     }
 
@@ -631,10 +687,10 @@ class Sequencer extends Component {
             
         }, this.state.synthBank[1].pattern[13], this.state.noteDivision).start(0);
 
-        // // //////
-        // // SYNTH THREE
+        // // // //////
+        // // // SYNTH THREE
         
-        // // /////
+        // // // /////
 
         // this.synth2Loop = new Tone.Sequence((time, note) => {
         //     if(note == 1){
@@ -900,11 +956,6 @@ class Sequencer extends Component {
         this.preparePianoGrid();
     }
 
-    getCurrentNotes = () => {
-        
-
-        
-    }
 
     playSound = () => {
         this.kick.start();
@@ -994,6 +1045,8 @@ class Sequencer extends Component {
             this.setState({currentView: "drums"})
         }
 
+        // this.getCurrentNotes();
+        this.prepareSingleGrid();
 
     }
 
