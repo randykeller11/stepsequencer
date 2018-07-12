@@ -202,7 +202,7 @@ let startButton = {
     height: '50px',
     backgroundColor: 'green',
     borderRadius: '5px',
-    boxShadow: '0 6px #027C00',
+    boxShadow: '0 6px #024F16',
     border: '1px solid black',
     cursor: 'pointer'
 }
@@ -215,7 +215,7 @@ let startButtonPressed = {
     borderRadius: '5px',
     transform: 'translateY(3px)',
     transition: '150ms ease-in-out',
-    boxShadow: '0 3px #0D580C',
+    boxShadow: '0 3px #02340F',
     border: '1px solid black',
     cursor: 'pointer'
 }
@@ -241,7 +241,7 @@ let stopButtonPressed = {
     borderRadius: '5px',
     transform: 'translateY(3px)',
     transition: '150ms ease-in-out',
-    boxShadow: '0 3px #C9253B',
+    boxShadow: '0 3px #521601',
     border: '1px solid black',
     cursor: 'pointer'
 }
@@ -340,7 +340,7 @@ class Sequencer extends Component {
             volume: -5,
             currentView: "drums",
             patternName: this.props.pattern.name,
-            tracks: ["Kick", "Snare", "Hihat", "O-HH", "Clap", "Crash", "Tom 1", "Tom 2"],
+            tracks: ["Kick", "Snare", "Hihat", "Dbl HH", "Clap", "Tom 1", "Tom 2", "FX"],
             pattern: this.props.pattern.events,
             synthBank: this.props.pattern.synthEvents,
             currentSynthSelection: 0,
@@ -381,6 +381,20 @@ class Sequencer extends Component {
             "url" : "./Clap.wav"
         }).toMaster();
 
+        this.tom1 = new Tone.Player({
+            "url" : "./Tom1.wav"
+        }).toMaster();
+
+        this.tom2 = new Tone.Player({
+            "url" : "./Tom2.wav"
+        }).toMaster();
+
+        this.fx1 = new Tone.Player({
+            "url" : "./FX1.wav"
+        }).toMaster();
+
+
+
         this.kickVol = new Tone.PanVol();
         this.kick.chain(this.kickVol, Tone.Master);
 
@@ -394,6 +408,11 @@ class Sequencer extends Component {
         this.snareLoop;
         this.hiHatLoop;
         this.clapLoop;
+        this.crashLoop;
+        this.tom1Loop;
+        this.tom2Loop;
+        this.fx1Loop;
+
         this.synth = Tone.Synth;
 
         this.synth1;
@@ -452,13 +471,13 @@ class Sequencer extends Component {
             "oscillator": this.state.oscillatorSettings[0], "envelope": this.state.envelopeSettings[0]},).chain(vol1, Tone.Master),
 
         this.synth2 = new Tone.PolySynth(14, Tone.Synth, {
-            "oscillator" : this.state.oscillatorSettings[1], "envelope": this.state.envelopeSettings[1]}).chain(vol1, Tone.Master)
+            "oscillator" : this.state.oscillatorSettings[1], "envelope": this.state.envelopeSettings[1]}).chain(vol2, Tone.Master)
 
         this.synth3 = new Tone.PolySynth(14, Tone.Synth, {
-            "oscillator" : this.state.oscillatorSettings[2], "envelope": this.state.envelopeSettings[2] }).chain(vol1, Tone.Master)
+            "oscillator" : this.state.oscillatorSettings[2], "envelope": this.state.envelopeSettings[2] }).chain(vol3, Tone.Master)
 
         this.synth4 = new Tone.PolySynth(14, Tone.Synth, {
-            "oscillator" : this.state.oscillatorSettings[3], "envelope": this.state.envelopeSettings[3] }).chain(vol1, Tone.Master)
+            "oscillator" : this.state.oscillatorSettings[3], "envelope": this.state.envelopeSettings[3] }).chain(vol4, Tone.Master)
         
 
         // console.log(this.synth1)
@@ -511,11 +530,36 @@ class Sequencer extends Component {
             }
         }, this.state.pattern[2], this.state.noteDivision).start(0);
 
+        this.crashLoop = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.hihat.start();
+                setTimeout(() => { this.hihat.start()}, 100);
+            }
+        }, this.state.pattern[3], this.state.noteDivision).start(0);
+
         this.clapLoop = new Tone.Sequence((time, note) => {
             if(note == 1){
                 this.clap.start();
             }
-        }, this.state.pattern[3], this.state.noteDivision).start(0);
+        }, this.state.pattern[4], this.state.noteDivision).start(0);
+
+        this.tom1Loop = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.tom1.start();
+            }
+        }, this.state.pattern[5], this.state.noteDivision).start(0);
+
+        this.tom2Loop = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.tom2.start();
+            }
+        }, this.state.pattern[6], this.state.noteDivision).start(0);
+
+        this.fx1Loop = new Tone.Sequence((time, note) => {
+            if(note == 1){
+                this.fx1.start();
+            }
+        }, this.state.pattern[7], this.state.noteDivision).start(0);
 
     }
 
@@ -993,6 +1037,10 @@ class Sequencer extends Component {
         this.snareLoop.dispose();
         this.hiHatLoop.dispose();
         this.clapLoop.dispose();
+        this.crashLoop.dispose();
+        this.tom1Loop.dispose();
+        this.tom2Loop.dispose();
+        this.fx1Loop.dispose();
 
         this.prepareEventGrid();
     }
@@ -1416,7 +1464,7 @@ class Sequencer extends Component {
                         <div style={envelopeContainer}>
                             <p width={'30px'}>Volume</p>
                         <div style={rangeContainer}>
-                            <input style={rangeStyle} type="range" min="-60" max="5" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].release} onChange={this.changeSynthVolume}></input>
+                            <input style={rangeStyle} type="range" min="-40" max="10" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].release} onChange={this.changeSynthVolume}></input>
                             <p style={envText}>{this.state.volumeSettings[this.state.currentSynthSelection]}</p>
                         </div>
                     </div>
