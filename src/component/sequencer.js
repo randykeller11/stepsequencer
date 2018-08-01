@@ -34,11 +34,11 @@ let numberDisplay = {
 }
 
 let controlBoard = {
-    marginLeft: '150px',
+    marginLeft: '210px',
     marginBottom: '10px',
     marginTop: '10px',
     backgroundColor: '#223559',
-    width: '700px',
+    width: '550px',
     height: '100px',
     boxShadow: '15px 10px 13px -5px rgba(0,0,0,0.60)',
     borderRadius: '10px',
@@ -256,7 +256,7 @@ let imageContainerStart = {
 let playContainer = {
     width: '200px',
     marginTop: '20px',
-    marginLeft: '5px',
+    marginLeft: '20px',
     // backgroundColor: 'grey',
     // height: '75px'
 }
@@ -1387,7 +1387,6 @@ class Sequencer extends Component {
                 <button style={viewChange}onClick={this.changeView}>Synth View</button>
                 </div>
 
-                
             </div>
 
             {this.state.currentView !== "drums" ? <span></span> : <div className="row">
@@ -1402,13 +1401,16 @@ class Sequencer extends Component {
                 <div className="row" style={controlBoardSynth}>
                     <div style={synthControlContainer}>
                         <div className="row" style={synthPadding}>
-                        <div><button style={this.state.currentSynthSelection == 0 ? synthSelectionButtonActive : synthSelectionButton} value="0" onClick={this.changeSynthSelection}>Synth 1</button></div>
-                        <div><button style={this.state.currentSynthSelection == 1 ? synthSelectionButtonActive : synthSelectionButton} value="1" onClick={this.changeSynthSelection}>Synth 2</button></div>
+                        <div><button style={this.state.currentSynthSelection == 0 ? synthSelectionButtonActive : synthSelectionButton} 
+                        value="0" onClick={this.changeSynthSelection}>Synth 1</button></div>
+                        <div><button style={this.state.currentSynthSelection == 1 ? synthSelectionButtonActive : synthSelectionButton} 
+                        value="1" onClick={this.changeSynthSelection}>Synth 2</button></div>
                         </div>
-
                         <div className="row" style={synthPadding}>
-                        <div><button style={this.state.currentSynthSelection == 2 ? synthSelectionButtonActive : synthSelectionButton} value="2" onClick={this.changeSynthSelection}>Synth 3</button></div>
-                        <div><button style={this.state.currentSynthSelection == 3 ? synthSelectionButtonActive : synthSelectionButton} value="3" onClick={this.changeSynthSelection}>Synth 4</button></div>
+                        <div><button style={this.state.currentSynthSelection == 2 ? synthSelectionButtonActive : synthSelectionButton} 
+                        value="2" onClick={this.changeSynthSelection}>Synth 3</button></div>
+                        <div><button style={this.state.currentSynthSelection == 3 ? synthSelectionButtonActive : synthSelectionButton} 
+                        value="3" onClick={this.changeSynthSelection}>Synth 4</button></div>
                         </div>
                     </div>
                     <div>
@@ -1431,17 +1433,18 @@ class Sequencer extends Component {
                         <div style={envelopeContainer}>
                             <p width={'30px'}>Attack</p>
                         <div style={rangeContainer}>
-                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].attack} onChange={this.changeAttack}></input>
+                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.currentSynthSelection == 0 ? this.state.envelopeSettings[this.state.currentSynthSelection].attack * 100 : this.state.envelopeSettings[this.state.currentSynthSelection].attack * 100} onChange={this.changeAttack}></input>
                             <p style={envText}>{this.state.envelopeSettings[this.state.currentSynthSelection].attack}</p>
                         </div>
                     </div>
                     </div>
                 
+        
                     <div style={envelopeBuffer}>
                         <div style={envelopeContainer}>
                             <p width={'30px'}>Decay</p>
                         <div style={rangeContainer}>
-                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].decay} onChange={this.changeDecay}></input>
+                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].decay * 100} onChange={this.changeDecay}></input>
                             <p style={envText}>{this.state.envelopeSettings[this.state.currentSynthSelection].decay}</p>
                         </div>
                     </div>
@@ -1451,7 +1454,7 @@ class Sequencer extends Component {
                         <div style={envelopeContainer}>
                             <p width={'30px'}>Sustain</p>
                         <div style={rangeContainer}>
-                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].sustain} onChange={this.changeSustain}></input>
+                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].sustain * 100} onChange={this.changeSustain}></input>
                             <p style={envText}>{this.state.envelopeSettings[this.state.currentSynthSelection].sustain}</p>
                         </div>
                     </div>
@@ -1461,7 +1464,7 @@ class Sequencer extends Component {
                         <div style={envelopeContainer}>
                             <p width={'30px'}>Release</p>
                         <div style={rangeContainer}>
-                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].release} onChange={this.changeRelease}></input>
+                            <input style={rangeStyle} type="range" min="1" max="100" defaultValue={this.state.envelopeSettings[this.state.currentSynthSelection].release * 100} onChange={this.changeRelease}></input>
                             <p style={envText}>{this.state.envelopeSettings[this.state.currentSynthSelection].release}</p>
                         </div>
                     </div>
