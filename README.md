@@ -2,7 +2,7 @@
 
 A step sequencer where you can program drum loops and synths to an adjustable BPM. 
 
-### Link
+#### Heroku Link
 https://warm-shore-77918.herokuapp.com/ 
 (May take a moment to load)
 
