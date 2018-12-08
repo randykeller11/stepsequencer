@@ -406,8 +406,6 @@ class Sequencer extends Component {
         this.hihatVol = new Tone.PanVol();
         this.hihat.chain(this.hihatVol, Tone.Master);
 
-        this.chorus = new Tone.Chorus(0, 0, 0);
-
         this.positionLoop;
         this.kickLoop;
         this.snareLoop;
@@ -465,6 +463,8 @@ class Sequencer extends Component {
         // console.log(this.state.oscillatorSettings[1])
 
         console.log(this.state.volumeSettings[0]);
+
+        
 
 
         let vol1 = new Tone.Volume(this.state.volumeSettings[0]);
@@ -1088,7 +1088,10 @@ class Sequencer extends Component {
         this.kick.start();
     }
 
-    startLoop = () => {        
+    startLoop = () => {  
+        if (Tone.context.state !== 'running') {
+            Tone.context.resume();
+        }      
         Tone.Transport.start();
         this.setState({playing: true});
     }
