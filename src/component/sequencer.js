@@ -595,413 +595,51 @@ class Sequencer extends Component {
 
     preparePianoGrid = (synth, pattern) => {
 
-        //SYNTH 1
-        this.synthLoop = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][0]], '4n');
-            }
+
+        for(let i=0; i < 14; i++){
+
+            let synthLoop = "synthLoop"
+            let synth1Loop = "synth1Loop"
+            let synth2Loop = "synth2Loop"
+            let synth3Loop = "synth3Loop"
             
-        }, this.state.synthBank[0].pattern[0], this.state.noteDivision).start(0);
-
-        this.synthLoop1 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][1]], '4n');
+            if(i > 0){
+                synthLoop = synthLoop + i;
+                synth1Loop = synth1Loop + i;
+                synth2Loop = synth2Loop + i;
+                synth3Loop = synth3Loop + i;
+                
             }
-            
-        }, this.state.synthBank[0].pattern[1], this.state.noteDivision).start(0);
 
-        this.synthLoop2 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][2]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[2], this.state.noteDivision).start(0);
+            this[synthLoop] = new Tone.Sequence((time, note) => {
+                if(note == 1){
+                    this.synth1.triggerAttackRelease([this.state.noteList[0][i]], '4n');
+                }
+                
+            }, this.state.synthBank[0].pattern[i], this.state.noteDivision).start(0);
 
-        this.synthLoop3 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][3]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[3], this.state.noteDivision).start(0);
+            this[synth1Loop] = new Tone.Sequence((time, note) => {
+                if(note == 1){
+                    this.synth1.triggerAttackRelease([this.state.noteList[0][i]], '4n');
+                }
+                
+            }, this.state.synthBank[1].pattern[i], this.state.noteDivision).start(0);
 
-        this.synthLoop4 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][4]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[4], this.state.noteDivision).start(0);
+            this[synth2Loop] = new Tone.Sequence((time, note) => {
+                if(note == 1){
+                    this.synth1.triggerAttackRelease([this.state.noteList[0][i]], '4n');
+                }
+                
+            }, this.state.synthBank[2].pattern[i], this.state.noteDivision).start(0);
 
-        this.synthLoop5 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][5]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[5], this.state.noteDivision).start(0);
+            this[synth3Loop] = new Tone.Sequence((time, note) => {
+                if(note == 1){
+                    this.synth1.triggerAttackRelease([this.state.noteList[0][i]], '4n');
+                }
+                
+            }, this.state.synthBank[3].pattern[i], this.state.noteDivision).start(0);
 
-        this.synthLoop6 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][6]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[6], this.state.noteDivision).start(0);
-
-        this.synthLoop7 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][7]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[7], this.state.noteDivision).start(0);
-
-        this.synthLoop8 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][8]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[8], this.state.noteDivision).start(0);
-
-        this.synthLoop9 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][9]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[9], this.state.noteDivision).start(0);
-
-        this.synthLoop10 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][10]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[10], this.state.noteDivision).start(0);
-
-        this.synthLoop11 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][11]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[11], this.state.noteDivision).start(0);
-
-        this.synthLoop12 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][12]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[12], this.state.noteDivision).start(0);
-
-        this.synthLoop13 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth1.triggerAttackRelease([this.state.noteList[0][13]], '4n');
-            }
-            
-        }, this.state.synthBank[0].pattern[13], this.state.noteDivision).start(0);
-
-        // SYNTH TWO//
-        //         //
-        //         //
-        // ///////////
-
-        this.synth1Loop = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][0]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[0], this.state.noteDivision).start(0);
-
-        this.synth1Loop1 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][1]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[1], this.state.noteDivision).start(0);
-
-        this.synth1Loop2 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][2]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[2], this.state.noteDivision).start(0);
-
-        this.synth1Loop3 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][3]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[3], this.state.noteDivision).start(0);
-
-        this.synth1Loop4 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][4]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[4], this.state.noteDivision).start(0);
-
-        this.synth1Loop5 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][5]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[5], this.state.noteDivision).start(0);
-
-        this.synth1Loop6 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][6]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[6], this.state.noteDivision).start(0);
-
-        this.synth1Loop7 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][7]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[7], this.state.noteDivision).start(0);
-
-        this.synth1Loop8 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][8]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[8], this.state.noteDivision).start(0);
-
-        this.synth1Loop9 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][9]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[9], this.state.noteDivision).start(0);
-
-        this.synth1Loop10 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][10]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[10], this.state.noteDivision).start(0);
-
-        this.synth1Loop11 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][11]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[11], this.state.noteDivision).start(0);
-
-        this.synth1Loop12 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][12]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[12], this.state.noteDivision).start(0);
-
-        this.synth1Loop13 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth2.triggerAttackRelease([this.state.noteList[1][13]], '4n');
-            }
-            
-        }, this.state.synthBank[1].pattern[13], this.state.noteDivision).start(0);
-
-        // // // //////
-        // // // SYNTH THREE
-        
-        // // // /////
-
-        this.synth2Loop = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][0]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[0], this.state.noteDivision).start(0);
-
-        this.synth2Loop1 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][1]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[1], this.state.noteDivision).start(0);
-
-        this.synth2Loop2 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][2]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[2], this.state.noteDivision).start(0);
-
-        this.synth2Loop3 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][3]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[3], this.state.noteDivision).start(0);
-
-        this.synth2Loop4 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][4]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[4], this.state.noteDivision).start(0);
-
-        this.synth2Loop5 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][5]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[5], this.state.noteDivision).start(0);
-
-        this.synth2Loop6 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][6]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[6], this.state.noteDivision).start(0);
-
-        this.synth2Loop7 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][7]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[7], this.state.noteDivision).start(0);
-
-        this.synth2Loop8 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][8]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[8], this.state.noteDivision).start(0);
-
-        this.synth2Loop9 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][9]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[9], this.state.noteDivision).start(0);
-
-        this.synth2Loop10 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][10]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[10], this.state.noteDivision).start(0);
-
-        this.synth2Loop11 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][11]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[11], this.state.noteDivision).start(0);
-
-        this.synth2Loop12 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][12]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[12], this.state.noteDivision).start(0);
-
-        this.synth2Loop13 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][13]], '4n');
-            }
-            
-        }, this.state.synthBank[2].pattern[13], this.state.noteDivision).start(0);
-
-        /////
-        // FOUR
-        //
-        //////
-
-        this.synth3Loop = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][0]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[0], this.state.noteDivision).start(0);
-
-        this.synth3Loop1 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][1]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[1], this.state.noteDivision).start(0);
-
-        this.synth3Loop2 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][2]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[2], this.state.noteDivision).start(0);
-
-        this.synth3Loop3 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][3]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[3], this.state.noteDivision).start(0);
-
-        this.synth3Loop4 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][4]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[4], this.state.noteDivision).start(0);
-
-        this.synth3Loop5 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][5]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[5], this.state.noteDivision).start(0);
-
-        this.synth3Loop6 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][6]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[6], this.state.noteDivision).start(0);
-
-        this.synth3Loop7 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][7]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[7], this.state.noteDivision).start(0);
-
-        this.synth3Loop8 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][8]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[8], this.state.noteDivision).start(0);
-
-        this.synth3Loop9 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth3.triggerAttackRelease([this.state.noteList[1][9]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[9], this.state.noteDivision).start(0);
-
-        this.synth3Loop10 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][10]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[10], this.state.noteDivision).start(0);
-
-        this.synth3Loop11 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][11]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[11], this.state.noteDivision).start(0);
-
-        this.synth3Loop12 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][12]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[12], this.state.noteDivision).start(0);
-
-        this.synth3Loop13 = new Tone.Sequence((time, note) => {
-            if(note == 1){
-                this.synth4.triggerAttackRelease([this.state.noteList[1][13]], '4n');
-            }
-            
-        }, this.state.synthBank[3].pattern[13], this.state.noteDivision).start(0);
+        }
 
     }
 
